@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../css/bottomnav.css'
 
+// 오케이 야채민호 렛츠기릿
 const BottomNav = () => {
     const [active, setActive] = useState('')
     const navigate = useNavigate()
