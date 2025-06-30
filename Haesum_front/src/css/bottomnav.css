@@ -15,12 +15,14 @@ body {
 }
 
 .BottomNav_nav {
-    width: 500px;
+    width: 502px;
     height: 120px;
     position: fixed;
+    z-index: 9999;
     display: flex;
     align-items: center;
     border-top: 1px solid #ccc;
+    background-color: #fff;
     bottom: 0;
     left: 50%;
     transform: translate(-50%, 0);
@@ -55,6 +57,7 @@ body {
     text-decoration: none;
     color: #191919;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .BottomNav_home img {
@@ -67,4 +70,5 @@ body {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    cursor: pointer;
 }

@@ -76,7 +76,7 @@ body {
     row-gap: 20px;
     padding: 0;
     position: absolute;
-    top: 30px;
+    top: 50px;
     left: 0;
 }
 
@@ -107,8 +107,7 @@ body {
     justify-content: space-between;
     align-items: center;
     position: absolute;
-    top: 50%;
-    transform: translate(0, -50%);
+    top: 200px;
     z-index: 10;
     pointer-events: auto;
 }
@@ -160,7 +159,7 @@ body {
 
 .MainPage_youtube-listbox {
     width: 480px;
-    height: 300px;
+    height: 320px;
     margin: 0 auto 40px auto;
 }
 

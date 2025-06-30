@@ -15,7 +15,6 @@ const MyPage = () => {
                     <img src="./src/images/logo.png" alt="해숨로고" className='MyPage_logo' />
                 </div>
                 <h2>마이페이지</h2>
-
                 <div className='MyPage_login'>
                     <p>로그인 해주세요.</p>
                     <div>

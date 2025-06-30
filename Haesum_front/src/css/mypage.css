@@ -55,6 +55,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin: 0 0 20px 0;
+    margin-bottom: 40px;
 }
 
 .MyPage_login a {
