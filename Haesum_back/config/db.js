@@ -1,5 +1,9 @@
 const oracledb = require('oracledb');
 
+oracledb.initOracleClient({
+  libDir: process.env.ORACLE_CLIENT_LIB_DIR
+});
+
 const getConnection = async () => {
   return await oracledb.getConnection({
     user: process.env.DB_USER,

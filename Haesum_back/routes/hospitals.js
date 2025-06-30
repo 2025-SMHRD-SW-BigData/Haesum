@@ -3,19 +3,24 @@ const router = express.Router();
 const { getConnection } = require('../config/db');
 
 router.get('/hospitals', async (req, res) => {
-  let conn;
+  let connection;
   try {
-    conn = await getConnection();
+    connection = await getConnection();
 
-    const hospitalsSql = `SELECT * FROM HOSPITALS`;
-    const deptSql = `SELECT * FROM DEPARTMENTS`;
-    const mappingSql = `SELECT * FROM HOSPITAL_DEPARTMENT_MAPPING`;
+    const [hospitalResult, departmentResult, mappingResult] = await Promise.all([
+      connection.execute(`SELECT HOSPITAL_ID, HOSPITAL_NAME, ADDRESS, PHONE_NUMBER, LATITUDE, LONGITUDE, WEBSITE FROM HOSPITALINFO`),
+      connection.execute(`SELECT MED_ID, MED_NAME FROM MEDICALDEPT`),
+      connection.execute(`SELECT HOSPITAL_ID, MED_ID FROM HOSPITAL_DEPARTMENT`)
+    ]);
 
-    const hospitalsResult = await conn.execute(hospitalsSql);
-    const deptResult = await conn.execute(deptSql);
-    const mappingResult = await conn.execute(mappingSql);
+    const medMap = new Map(departmentResult.rows.map(([medId, medName]) => [medId, medName]));
+    const hospitalDeptMap = {};
+    mappingResult.rows.forEach(([hospitalId, medId]) => {
+      if (!hospitalDeptMap[hospitalId]) hospitalDeptMap[hospitalId] = [];
+      hospitalDeptMap[hospitalId].push(medMap.get(medId));
+    });
 
-    const hospitals = hospitalsResult.rows.map(row => ({
+    const hospitals = hospitalResult.rows.map(row => ({
       id: row[0],
       name: row[1],
       address: row[2],
@@ -23,31 +28,15 @@ router.get('/hospitals', async (req, res) => {
       lat: row[4],
       lng: row[5],
       website: row[6],
-      departments: []
+      departments: hospitalDeptMap[row[0]] || []
     }));
-
-    const departments = deptResult.rows.map(row => ({
-      id: row[0],
-      name: row[1]
-    }));
-
-    const mappings = mappingResult.rows;
-
-    hospitals.forEach(h => {
-      mappings.forEach(m => {
-        if (h.id === m[1]) {
-          const dept = departments.find(d => d.id === m[2]);
-          if (dept) h.departments.push(dept.name);
-        }
-      });
-    });
 
     res.json(hospitals);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'DB error' });
+  } catch (error) {
+    console.error('DB 조회 오류:', error);
+    res.status(500).json({ error: 'DB 조회 실패' });
   } finally {
-    if (conn) await conn.close();
+    if (connection) await connection.close();
   }
 });
 
