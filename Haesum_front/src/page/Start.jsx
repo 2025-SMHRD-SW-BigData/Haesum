@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../css/start.css'
-//asdasdasdasd
+
 const hospitalData = [
     [1, 2, 3, 4],
     [5, 6, 7, 8],
