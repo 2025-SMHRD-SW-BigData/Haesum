@@ -10,21 +10,20 @@ body {
 }
 
 /* container */
-.container {
+.Join_container {
     width: 500px;
     margin: 0 auto;
     padding-top: 40px;
     height: 100%;
-    /* background-color: aqua; */
 }
 
-.container::after {
+.Join_container::after {
     content: '';
     display: block;
     clear: both;
 }
 
-.container h2 {
+.Join_container h2 {
     margin: 0;
     margin-bottom: 80px;
     text-align: center;
@@ -34,7 +33,7 @@ body {
 }
 
 /* 핸드폰, 비번 입력 */
-.input-group {
+.Join_input-group {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -45,12 +44,12 @@ body {
     color: #333;
 }
 
-.input-group label {
+.Join_input-group label {
     width: 120px;
     font-weight: bold;
 }
 
-.input-group input {
+.Join_input-group input {
     width: 300px;
     border: none;
     outline: none;
@@ -59,12 +58,12 @@ body {
     background-color: transparent;
 }
 
-.input-group input::placeholder {
+.Join_input-group input::placeholder {
     color: #777777;
 }
 
 /* 회원가입 버튼 */
-.submit-btn {
+.Join_submit-btn {
     display: block;
     margin: 40px auto 0;
     padding: 10px 20px;

@@ -10,37 +10,35 @@ body {
 }
 
 /* container */
-.container {
+.Login_container {
     width: 500px;
     margin: 0 auto;
     padding-top: 20px;
     height: 100%;
-    /* background-color: aqua; */
 }
 
-.container::after {
+.Login_container::after {
     content: '';
     display: block;
     clear: both;
 }
 
-
 /* 뒤로가기 */
-.back {
+.Login_back {
     display: block;
-        width: 32px;
+    width: 32px;
     height: 32px;
     margin-bottom: 60px;
 }
 
-.back img {
+.Login_back img {
     display: block;
     width: 32px;
     height: 32px;
 }
 
 /* 로고 */
-.logo {
+.Login_logo {
     display: block;
     width: 100px;
     height: 100px;
@@ -48,7 +46,7 @@ body {
     margin-bottom: 40px;
 }
 
-.container>p {
+.Login_container > p {
     font-size: 20px;
     font-weight: bold;
     text-align: center;
@@ -58,8 +56,7 @@ body {
 }
 
 /* 로그인 버튼 */
-
-.login {
+.Login_login {
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -67,7 +64,7 @@ body {
     margin-bottom: 40px;
 }
 
-.btn a {
+.Login_btn a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -81,38 +78,38 @@ body {
     gap: 10px;
 }
 
-.btn.kakao a {
+.Login_btn.kakao a {
     background-color: #F7E600;
     color: #000;
 }
 
-.btn.naver a {
+.Login_btn.naver a {
     background-color: #00C73C;
     color: #fff;
 }
 
-.btn.google a {
+.Login_btn.google a {
     background-color: #000;
     color: #fff;
 }
 
-.btn img {
+.Login_btn img {
     width: 20px;
     height: 20px;
 }
 
-.btn.google img {
+.Login_btn.google img {
     width: 28px;
     height: 28px;
 }
 
 /* 핸드폰 번호로 회원가입 */
-.phone-wrap{
+.Login_phone-wrap {
     display: flex;
     justify-content: center;
 }
 
-.phone {
+.Login_phone {
     display: inline-block;
     border-bottom: 1px solid #000;
     text-align: center;

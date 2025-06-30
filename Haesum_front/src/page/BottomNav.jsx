@@ -7,12 +7,12 @@ const BottomNav = () => {
     const navigate = useNavigate()
 
     return (
-        <div className='nav'>
+        <div className='BottomNav_nav'>
             <a 
-                className='home'
+                className='BottomNav_home'
                 onClick={() => {
                     setActive('')
-                    navigate('/')  // 수정: /main -> /
+                    navigate('/')
                 }}
             >
                 <img src="./src/images/home.png" alt="홈" />

@@ -10,13 +10,13 @@ const MyPage = () => {
 
     return (
         <>
-            <div className='container'>
-                <div className='header'>
-                    <img src="./src/images/logo.png" alt="해숨로고" className='logo' />
+            <div className='MyPage_container'>
+                <div className='MyPage_header'>
+                    <img src="./src/images/logo.png" alt="해숨로고" className='MyPage_logo' />
                 </div>
                 <h2>마이페이지</h2>
 
-                <div className='login'>
+                <div className='MyPage_login'>
                     <p>로그인 해주세요.</p>
                     <div>
                         <a
@@ -31,8 +31,8 @@ const MyPage = () => {
                     </div>
                 </div>
 
-                <div className='save-container'>
-                    <div className='checklist'>
+                <div className='MyPage_save-container'>
+                    <div className='MyPage_checklist'>
                         <a
                             href="#"
                             onMouseEnter={() => setIsChecklistHover(true)}
@@ -54,7 +54,7 @@ const MyPage = () => {
                         </a>
                     </div>
 
-                    <div className='save'>
+                    <div className='MyPage_save'>
                         <a
                             href="#"
                             onMouseEnter={() => setIsSaveHover(true)}

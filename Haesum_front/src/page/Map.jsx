@@ -4,37 +4,30 @@ import '../css/map.css'
 import BottomNav from '../page/BottomNav'
 
 const Map = () => {
-    // 검색기능
-    const [inputValue, setInputValue] = useState('');
-
-    // 진료과목 보기 기능
-    const [showSubjectList, setShowSubjectList] = useState(false);
-
-    // 진료과 버튼 hover 기능
-    const [isHovered, setIsHovered] = useState(false);
-
-    // 진료과 버튼 click 기능
-    const [isActive, setIsActive] = useState(false);
+    const [inputValue, setInputValue] = useState('')
+    const [showSubjectList, setShowSubjectList] = useState(false)
+    const [isHovered, setIsHovered] = useState(false)
+    const [isActive, setIsActive] = useState(false)
 
     const handleClickSubject = () => {
-        setShowSubjectList(true);
-        setIsActive(true);
-    };
+        setShowSubjectList(true)
+        setIsActive(true)
+    }
 
     const handleClose = () => {
-        setShowSubjectList(false);
-        setIsActive(false); // hover 스타일 해제
-    };
+        setShowSubjectList(false)
+        setIsActive(false)
+    }
+
     return (
         <div>
-            <div className='container'>
-                {/* 로고 */}
-                <div className='header'>
-                    <img src="./src/images/logo.png" alt="해숨로고" className='logo' />
+            <div className='Map_container'>
+                <div className='Map_header'>
+                    <img src="./src/images/logo.png" alt="해숨로고" className='Map_logo' />
                 </div>
-                {/* 검색 */}
-                <div className="search-bar">
-                    <img src="./src/images/main-search.png" alt="검색" className="search-icon" />
+
+                <div className="Map_search-bar">
+                    <img src="./src/images/main-search.png" alt="검색" className="Map_search-icon" />
                     <input
                         type="text"
                         value={inputValue}
@@ -42,28 +35,30 @@ const Map = () => {
                         placeholder="질병, 진료과, 병원을 검색해보세요."
                     />
                 </div>
-                {/* 진료과목명 */}
-                <div className={`subject-name ${isHovered || isActive ? 'active' : ''}`}
+
+                <div className={`Map_subject-name ${isHovered || isActive ? 'active' : ''}`}
                     onClick={handleClickSubject}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}>
                     진료과 <img
                         src={(isHovered || isActive)
                             ? "./src/images/under direction-2.png"
-                            : "./src/images/under direction.png"} alt="화살표" className={showSubjectList ? 'rotated' : ''} />
+                            : "./src/images/under direction.png"}
+                        alt="화살표"
+                        className={showSubjectList ? 'rotated' : ''}
+                    />
                 </div>
-                {/* 지도 */}
-                <div className='map'>
-                    {/* 지도api 넣기 */}
-                </div>
+
+                <div className='Map_map'></div>
+
                 {showSubjectList && (
-                    <div className="overlay" onClick={handleClose}></div>
+                    <div className="Map_overlay" onClick={handleClose}></div>
                 )}
-                {/* 진료과목 리스트 */}
-                <div className={`subject-name-list ${showSubjectList ? 'show' : ''}`}>
-                    <div className='list-title'>
+
+                <div className={`Map_subject-name-list ${showSubjectList ? 'show' : ''}`}>
+                    <div className='Map_list-title'>
                         <h6>진료과목명</h6>
-                        <img src="./src/images/close.png" alt="닫기" className='close' onClick={handleClose} />
+                        <img src="./src/images/close.png" alt="닫기" onClick={handleClose} />
                     </div>
                     <ul>
                         <li><a href="#">전체보기</a></li>
@@ -88,11 +83,9 @@ const Map = () => {
                     </ul>
                 </div>
             </div>
-             <BottomNav />
+            <BottomNav />
         </div>
-        
     )
-    
 }
 
 export default Map

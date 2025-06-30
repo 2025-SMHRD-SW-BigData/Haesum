@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import '../css/join.css'
 
 const Join = () => {
-    // 핸드폰, 비번 입력
-    const [phone, setPhone] = useState('');
-    const [password, setPassword] = useState('');
+    const [phone, setPhone] = useState('')
+    const [password, setPassword] = useState('')
+
     return (
         <>
-            <div className='container'>
+            <div className='Join_container'>
                 <h2>회원가입</h2>
-                <div className='input-group'>
+                <div className='Join_input-group'>
                     <label>핸드폰 번호</label>
                     <input
                         type='text'
@@ -20,7 +20,7 @@ const Join = () => {
                     />
                 </div>
 
-                <div className='input-group'>
+                <div className='Join_input-group'>
                     <label>비밀번호</label>
                     <input
                         type='password'
@@ -29,7 +29,7 @@ const Join = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                <button className='submit-btn'>회원가입</button>
+                <button className='Join_submit-btn'>회원가입</button>
             </div>
         </>
     )

@@ -9,24 +9,21 @@ body {
     height: 100%;
 }
 
-/* container */
-.container {
+.MainPage_container {
     width: 500px;
     margin: 0 auto;
     padding-top: 20px;
     height: 100%;
-    /* background-color: aqua; */
 }
 
-.container::after {
+.MainPage_container::after {
     content: '';
     display: block;
     clear: both;
 }
 
-
 /* header */
-.header {
+.MainPage_header {
     width: 100%;
     box-sizing: border-box;
     padding: 0 10px;
@@ -37,44 +34,41 @@ body {
     margin-bottom: 30px;
 }
 
-.logo {
+.MainPage_logo {
     width: 60px;
     margin: 0 auto;
 }
 
 /* 선택한 진료과목 보기 */
-.hospital-list-container {
+.MainPage_hospital-list-container {
     width: 100%;
     height: 400px;
     position: relative;
     z-index: 0;
     margin-bottom: 50px;
-    /* background-color: aquamarine; */
 }
 
-.hospital-list-container::after {
+.MainPage_hospital-list-container::after {
     content: '';
     display: block;
     clear: both;
 }
 
-.hospital-list-container>h4 {
+.MainPage_hospital-list-container > h4 {
     font-size: 20px;
     display: inline-flex;
     align-items: center;
     gap: 5px;
     line-height: 1;
-    margin: 0;
+    margin: 0 0 20px 0;
     padding: 0;
-    margin-bottom: 20px;
 }
 
-.hospital-list-container h4 img {
+.MainPage_hospital-list-container h4 img {
     width: 30px;
 }
 
-.hospital-list {
-    /* overflow: hidden; */
+.MainPage_hospital-list {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -86,7 +80,7 @@ body {
     left: 0;
 }
 
-.hospital-list li {
+.MainPage_hospital-list li {
     width: 160px;
     height: 160px;
     list-style: none;
@@ -98,15 +92,16 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
 }
 
-.hospital-list-container .hospital-list {
+.MainPage_hospital-list-container .MainPage_hospital-list {
     display: none;
 }
 
-.hospital-list-container .hospital-list:first-of-type {
+.MainPage_hospital-list-container .MainPage_hospital-list:first-of-type {
     display: flex;
 }
 
-.button {
+/* 버튼 */
+.MainPage_button {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -118,21 +113,21 @@ body {
     pointer-events: auto;
 }
 
-.button img {
+.MainPage_button img {
     width: 35px;
     cursor: pointer;
     pointer-events: auto;
 }
 
 /* 다음 버튼 */
-.next {
+.MainPage_next {
     width: 100%;
     height: 60px;
     border-radius: 20px;
     background-color: #00B0F8;
 }
 
-.next a {
+.MainPage_next a {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -145,40 +140,36 @@ body {
 }
 
 /* 건강정보 영상 보기 */
-.youtube {
+.MainPage_youtube {
     width: 100%;
 }
 
-.youtube h4 {
+.MainPage_youtube h4 {
     font-size: 20px;
     display: inline-flex;
     align-items: center;
     gap: 5px;
     line-height: 1;
-    margin: 0;
+    margin: 0 0 10px 0;
     padding: 0;
-    margin-bottom: 10px;
 }
 
-.youtube h4 img {
+.MainPage_youtube h4 img {
     width: 30px;
 }
 
-.youtube-listbox {
+.MainPage_youtube-listbox {
     width: 480px;
     height: 300px;
-    margin-bottom: 40px;
-    margin: 0 auto;
-    /* background-color: #00c6ff; */
+    margin: 0 auto 40px auto;
 }
 
-.youtube-listbox ul {
+.MainPage_youtube-listbox ul {
     padding: 0 20px;
-    margin: 0;
-    margin-bottom: 10px;
+    margin: 0 0 10px 0;
 }
 
-.youtube-listbox ul li {
+.MainPage_youtube-listbox ul li {
     list-style: none;
     height: 36px;
     border-bottom: 1px solid #D9D9D9;
@@ -186,22 +177,22 @@ body {
     align-items: center;
 }
 
-.youtube-listbox ul li:last-child {
+.MainPage_youtube-listbox ul li:last-child {
     border: none;
 }
 
-.youtube-listbox ul li a {
+.MainPage_youtube-listbox ul li a {
     text-decoration: none;
     font-size: 14px;
     color: #242424;
     transition: 0.1s ease;
 }
 
-.youtube-listbox ul li a:hover {
+.MainPage_youtube-listbox ul li a:hover {
     color: #0099ff;
 }
 
-.youtube-listbox>div {
+.MainPage_youtube-listbox > div {
     width: 100%;
     border-radius: 20px;
     border: 1px solid #D9D9D9;
@@ -210,12 +201,12 @@ body {
     padding-top: 16px;
 }
 
-.more {
+.MainPage_more {
     width: 400px;
     margin: 0 auto;
 }
 
-.more a {
+.MainPage_more a {
     display: block;
     width: 400px;
     padding: 6px 0;
@@ -227,7 +218,7 @@ body {
     transition: 0.2s ease;
 }
 
-.more a:hover {
+.MainPage_more a:hover {
     background-color: #a1a1a1;
     color: #fff;
 }
