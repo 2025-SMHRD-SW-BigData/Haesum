@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/earlyaccess/nanumgothic.css');
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Nanum Gothic', sans-serif;
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  width: 500px;
+  margin: 0 auto;
+  padding-top: 20px;
+  height: 100%;
+  position: relative;
+  /* background-color: aqua; */
+}
+
+.container::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* header */
+.header {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    margin-bottom: 30px;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+}
+
+/* search-bar */
+.search-bar {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  background-color: rgba(234, 235, 240, 0.8);
+  border-radius: 20px;
+  padding: 10px 12px;
+  width: 450px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  top: 130px;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 15px;
+  flex: 1;
+  color: #000000;
+}
+
+.search-bar input::placeholder {
+  color: #4b4b4b;
+}
+
+/* 진료과목명 */
+.subject-name img {
+  width: 20px;
+  margin-left: 2px;
+  transition: transform 0.3s ease;
+}
+
+.subject-name img.rotated {
+  transform: rotate(180deg); /* 회전 적용 */
+}
+
+.subject-name {
+  width: 102px;
+  height: 32px;
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing :0.8px;
+  border-radius: 22px;
+  border: 1px solid #000000;
+  background-color: rgba(228, 228, 228, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 26px;
+  position: absolute;
+  top: 190px;
+}
+
+.subject-name:hover,
+.subject-name.active {
+  background-color: #00B0F8;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* 지도 */
+.map {
+  width: 100%;
+  background-color: #ff1010;
+  /* background-image: url('../images/black.jpg'); */
+  height: calc(100vh - 120px);
+}
+
+/* 진료과목 리스트 */
+.subject-name-list {
+  width: 502px;
+  height: 400px;
+  position: fixed;
+  left: 50%;
+  bottom: -450px;
+  transform: translate(-50%, 0);
+  background-color: #ffffff;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  box-sizing: border-box;
+  padding-top: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
+  transition: bottom 0.4s ease-in-out, opacity 0.3s ease-in-out;
+  z-index: 1000;
+   opacity: 0;
+}
+.subject-name-list.show {
+  bottom: 100px; /* 하단 내비게이션 위로 올라오게 */
+  opacity: 1;
+}
+
+.subject-name-list h6 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.subject-name-list img {
+  width: 26px;
+    cursor: pointer;
+}
+
+.list-title {
+  height: 40px;
+  border-bottom: 1px solid #aaa;
+  display: flex;
+  justify-content: space-between;
+  /* 좌우 정렬 */
+  align-items: center;
+  /* 세로 중앙 정렬 */
+  margin-bottom: 30px;
+}
+
+.subject-name-list ul{
+  box-sizing: border-box;
+  padding-top: 10px;
+  padding: 0;
+  overflow: hidden;
+  margin: 0;
+}
+
+.subject-name-list ul li{
+  list-style: none;
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 6px;
+}
+.subject-name-list ul a{
+  display: inline-block;
+  color: #333;
+  font-size: 14px;
+  text-decoration: none;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid #aaa;
+}
+.subject-name-list a:hover{
+  background-color: #e0e0e0;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4); /* 반투명 검정 */
+  z-index: 999; /* 리스트보다 뒤에, but 다른 요소 위에 */
+}

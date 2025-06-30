@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/earlyaccess/nanumgothic.css');
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Nanum Gothic', sans-serif;
+    width: 100%;
+    height: 100%;
+}
+
+/* container */
+.container {
+    width: 500px;
+    margin: 0 auto;
+    padding-top: 40px;
+    height: 100%;
+    /* background-color: aqua; */
+}
+
+.container::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.container h2 {
+    margin: 0;
+    margin-bottom: 80px;
+    text-align: center;
+    box-sizing: border-box;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #aaa;
+}
+
+/* 핸드폰, 비번 입력 */
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #aaa;
+    font-size: 16px;
+    color: #333;
+}
+
+.input-group label {
+    width: 120px;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 300px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #000000;
+    background-color: transparent;
+}
+
+.input-group input::placeholder {
+    color: #777777;
+}
+
+/* 회원가입 버튼 */
+.submit-btn {
+    display: block;
+    margin: 40px auto 0;
+    padding: 10px 20px;
+    background-color: #222;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}

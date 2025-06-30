@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/earlyaccess/nanumgothic.css');
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Nanum Gothic', sans-serif;
+    width: 100%;
+    height: 100%;
+}
+
+/* container */
+.container {
+    width: 500px;
+    margin: 0 auto;
+    padding-top: 20px;
+    height: 100%;
+    /* background-color: aqua; */
+}
+
+.container::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+
+/* header */
+.header {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    margin-bottom: 30px;
+}
+
+.logo {
+    width: 60px;
+    margin: 0 auto;
+}
+
+/* 선택한 진료과목 보기 */
+.hospital-list-container {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    z-index: 0;
+    margin-bottom: 50px;
+    /* background-color: aquamarine; */
+}
+
+.hospital-list-container::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.hospital-list-container>h4 {
+    font-size: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.hospital-list-container h4 img {
+    width: 30px;
+}
+
+.hospital-list {
+    /* overflow: hidden; */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    column-gap: 26px;
+    row-gap: 20px;
+    padding: 0;
+    position: absolute;
+    top: 30px;
+    left: 0;
+}
+
+.hospital-list li {
+    width: 160px;
+    height: 160px;
+    list-style: none;
+    background-color: #fff;
+    border-radius: 20px;
+    border: 0.5px solid #e0e0e0;
+    margin: 0;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+.hospital-list-container .hospital-list {
+    display: none;
+}
+
+.hospital-list-container .hospital-list:first-of-type {
+    display: flex;
+}
+
+.button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.button img {
+    width: 35px;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* 다음 버튼 */
+.next {
+    width: 100%;
+    height: 60px;
+    border-radius: 20px;
+    background-color: #00B0F8;
+}
+
+.next a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: #fff;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+}
+
+/* 건강정보 영상 보기 */
+.youtube {
+    width: 100%;
+}
+
+.youtube h4 {
+    font-size: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+.youtube h4 img {
+    width: 30px;
+}
+
+.youtube-listbox {
+    width: 480px;
+    height: 300px;
+    margin-bottom: 40px;
+    margin: 0 auto;
+    /* background-color: #00c6ff; */
+}
+
+.youtube-listbox ul {
+    padding: 0 20px;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.youtube-listbox ul li {
+    list-style: none;
+    height: 36px;
+    border-bottom: 1px solid #D9D9D9;
+    display: flex;
+    align-items: center;
+}
+
+.youtube-listbox ul li:last-child {
+    border: none;
+}
+
+.youtube-listbox ul li a {
+    text-decoration: none;
+    font-size: 14px;
+    color: #242424;
+    transition: 0.1s ease;
+}
+
+.youtube-listbox ul li a:hover {
+    color: #0099ff;
+}
+
+.youtube-listbox>div {
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid #D9D9D9;
+    height: 180px;
+    box-sizing: border-box;
+    padding-top: 16px;
+}
+
+.more {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.more a {
+    display: block;
+    width: 400px;
+    padding: 6px 0;
+    text-decoration: none;
+    background-color: #D9D9D9;
+    text-align: center;
+    font-size: 14px;
+    color: #000;
+    transition: 0.2s ease;
+}
+
+.more a:hover {
+    background-color: #a1a1a1;
+    color: #fff;
+}

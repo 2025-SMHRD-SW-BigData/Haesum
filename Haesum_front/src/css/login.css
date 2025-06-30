@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/earlyaccess/nanumgothic.css');
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Nanum Gothic', sans-serif;
+    width: 100%;
+    height: 100%;
+}
+
+/* container */
+.container {
+    width: 500px;
+    margin: 0 auto;
+    padding-top: 20px;
+    height: 100%;
+    /* background-color: aqua; */
+}
+
+.container::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+
+/* 뒤로가기 */
+.back {
+    display: block;
+        width: 32px;
+    height: 32px;
+    margin-bottom: 60px;
+}
+
+.back img {
+    display: block;
+    width: 32px;
+    height: 32px;
+}
+
+/* 로고 */
+.logo {
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    margin-bottom: 40px;
+}
+
+.container>p {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 30px;
+    margin: 0;
+    margin-bottom: 60px;
+}
+
+/* 로그인 버튼 */
+
+.login {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.btn a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    height: 50px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    text-decoration: none;
+    color: #000;
+    gap: 10px;
+}
+
+.btn.kakao a {
+    background-color: #F7E600;
+    color: #000;
+}
+
+.btn.naver a {
+    background-color: #00C73C;
+    color: #fff;
+}
+
+.btn.google a {
+    background-color: #000;
+    color: #fff;
+}
+
+.btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.btn.google img {
+    width: 28px;
+    height: 28px;
+}
+
+/* 핸드폰 번호로 회원가입 */
+.phone-wrap{
+    display: flex;
+    justify-content: center;
+}
+
+.phone {
+    display: inline-block;
+    border-bottom: 1px solid #000;
+    text-align: center;
+    font-size: 16px;
+    color: #000;
+    text-decoration: none;
+}
