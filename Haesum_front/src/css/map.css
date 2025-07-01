@@ -182,18 +182,27 @@ margin-bottom: 6px;
 }
 
 .Map_subject-name-list ul a {
-display: inline-block;
-color: #333;
-font-size: 14px;
-text-decoration: none;
-padding: 5px 14px;
-border-radius: 20px;
-border: 1px solid #aaa;
+  display: inline-block;
+  color: #333;
+  font-size: 14px;
+  text-decoration: none;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid #aaa;
+  box-sizing: border-box;
 }
 
 .Map_subject-name-list a:hover {
-background-color: #e0e0e0;
+  background-color: #e0e0e0;
 }
+
+/* 선택된 진료과 색상 */
+.Map_subject-name-list ul a.selected {
+  background-color: #00B0F8;
+  color: #fff;
+  border: 1px solid transparent; /* 기존 두께 유지 */
+}
+
 
 /* 오버레이 */
 .Map_overlay {
@@ -315,3 +324,5 @@ font-size: 14px;
 .Map_favorite-star.active {
   color: #FFD700;
 }
+
+

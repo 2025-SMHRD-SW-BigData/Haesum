@@ -4,6 +4,7 @@ import '../css/start.css'
 
 const Start = () => {
     const [selectedItems, setSelectedItems] = useState([])
+    const navigate = useNavigate()
 
     const symptoms = [
         '시야 흐림, 빛 번짐',
@@ -31,6 +32,10 @@ const Start = () => {
         }
     }
 
+    const goNext = () => {
+        navigate('/map', { state: { selectedSymptoms: selectedItems } })
+    }
+
     return (
         <div className='Start_container'>
             <h1>요즘 어디가 불편하신가요?</h1>
@@ -49,7 +54,7 @@ const Start = () => {
                 </ul>
             </div>
             <div className='Start_next'>
-                <a href="#">다음</a>
+                <a onClick={goNext}>다음</a>
             </div>
         </div>
     )

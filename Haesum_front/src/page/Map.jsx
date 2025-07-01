@@ -1,19 +1,41 @@
 import { useState, useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import '../css/map.css'
 import BottomNav from '../page/BottomNav'
 
 const departments = [
-  '전체보기', '가정의학과', '결핵과', '마취통증의학과', '비뇨기과', '소아청소년과', '신경과', '신경외과',
-  '안과', '영상의학과', '외과', '응급의학과', '이비인후과', '재활의학과', '정형외과',
-  '직업환경의학과', '피부과', '한방', '내과', '산부인과', '성형외과', '진단검사의학과', '정신건강의학과'
+  '전체보기', '가정의학과', '결핵과', '마취통증의학과', '비뇨기과', '소아청소년과',
+  '신경과', '신경외과', '안과', '영상의학과', '외과', '응급의학과',
+  '이비인후과', '재활의학과', '정형외과', '직업환경의학과', '피부과',
+  '한방', '내과', '산부인과', '성형외과', '진단검사의학과', '정신건강의학과'
 ]
 
+const symptomToDept = {
+  '시야 흐림, 빛 번짐': ['안과'],
+  '눈물 많음, 눈 충혈, 가려움': ['안과'],
+  '귀 통증, 귀 먹먹함': ['이비인후과'],
+  '귀에서 삐~(이명)': ['이비인후과'],
+  '기침, 가래': ['내과'],
+  '숨찰 때 있음, 가슴 답답': ['내과'],
+  '손발 저림, 저릿함': ['신경과'],
+  '허리·무릎·어깨 결림, 통증': ['정형외과', '재활의학과'],
+  '자주 어지럽고 깜빡 잘 잊음': ['신경과'],
+  '피부 가렵고 건조, 갈라짐': ['피부과'],
+  '햇볕에 피부 검게 변함': ['피부과'],
+  '속 더부룩, 소화 잘 안됨': ['내과'],
+  '변비/설사 자주': ['내과'],
+  '소변 자주 보고, 따갑고 잔뇨감': ['비뇨기과'],
+  '전체 보기': []
+}
+
 const Map = () => {
+  const location = useLocation()
+
   const [inputValue, setInputValue] = useState('')
   const [showSubjectList, setShowSubjectList] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [isActive, setIsActive] = useState(false)
-  const [selectedDept, setSelectedDept] = useState('전체보기')
+  const [selectedDepts, setSelectedDepts] = useState([])
   const [hospitals, setHospitals] = useState([])
   const [filteredHospitals, setFilteredHospitals] = useState([])
   const [listExpanded, setListExpanded] = useState(false)
@@ -35,10 +57,10 @@ const Map = () => {
   }
 
   const fetchHospitals = (dept = '전체보기') => {
-    const url = dept === '전체보기'
-      ? 'http://localhost:3000/api/hospitals'
-      : `http://localhost:3000/api/hospitals?department=${encodeURIComponent(dept)}`
-
+    let url = 'http://localhost:3000/api/hospitals'
+    if (dept !== '전체보기' && dept !== '') {
+      url += `?department=${encodeURIComponent(dept)}`
+    }
     fetch(url)
       .then(res => res.json())
       .then(data => {
@@ -48,38 +70,46 @@ const Map = () => {
       .catch(err => console.error('병원 정보 로드 실패:', err))
   }
 
-  const onSelectDepartment = (dept) => {
-    setInputValue(dept)
-    setSelectedDept(dept)
-    fetchHospitals(dept)
-    handleClose()
-  }
-
-  const onSearch = () => {
-    const keyword = inputValue.trim()
-    if (!keyword) {
-      setFilteredHospitals(hospitals)
+  const toggleDept = (dept) => {
+    if (dept === '전체보기') {
+      setSelectedDepts([])
+      fetchHospitals('전체보기')
+      handleClose()
       return
     }
-    const filtered = hospitals.filter(h =>
-      h.name.includes(keyword) ||
-      h.departments.some(d => d.includes(keyword))
+    setSelectedDepts(prev =>
+      prev.includes(dept)
+        ? prev.filter(d => d !== dept)
+        : [...prev, dept]
     )
-    setFilteredHospitals(filtered)
   }
 
-  const toggleFavorite = (id) => {
-    setFavorites(prev => {
-      const newFavorites = new Set(prev)
-      if (newFavorites.has(id)) newFavorites.delete(id)
-      else newFavorites.add(id)
-      return newFavorites
-    })
-  }
+  useEffect(() => {
+    if (selectedDepts.length === 0) {
+      setFilteredHospitals(hospitals)
+    } else {
+      const filtered = hospitals.filter(h =>
+        h.departments.some(d => selectedDepts.includes(d))
+      )
+      setFilteredHospitals(filtered)
+    }
+    setInputValue(selectedDepts.length === 0 ? '' : selectedDepts.join(', '))
+  }, [selectedDepts, hospitals])
 
   useEffect(() => {
     fetchHospitals('전체보기')
   }, [])
+
+  useEffect(() => {
+    if (location.state && location.state.selectedSymptoms) {
+      let depts = []
+      location.state.selectedSymptoms.forEach(symptom => {
+        depts = [...depts, ...(symptomToDept[symptom] || [])]
+      })
+      depts = Array.from(new Set(depts))
+      setSelectedDepts(depts)
+    }
+  }, [location.state])
 
   useEffect(() => {
     if (window.kakao && window.kakao.maps) {
@@ -154,6 +184,31 @@ const Map = () => {
     }
   }
 
+  const onSearch = () => {
+    const keyword = inputValue.trim()
+    if (!keyword) {
+      setFilteredHospitals(hospitals)
+      return
+    }
+    const keywords = keyword.split(',').map(k => k.trim()).filter(k => k !== '')
+    const filtered = hospitals.filter(h =>
+      keywords.some(k =>
+        h.name.includes(k) ||
+        h.departments.some(d => d.includes(k))
+      )
+    )
+    setFilteredHospitals(filtered)
+  }
+
+  const toggleFavorite = (id) => {
+    setFavorites(prev => {
+      const newFavorites = new Set(prev)
+      if (newFavorites.has(id)) newFavorites.delete(id)
+      else newFavorites.add(id)
+      return newFavorites
+    })
+  }
+
   return (
     <div>
       <div className='Map_container'>
@@ -173,12 +228,10 @@ const Map = () => {
           <button onClick={onSearch}>검색</button>
         </div>
 
-        <div
-          className={`Map_subject-name ${isHovered || isActive ? 'active' : ''}`}
+        <div className={`Map_subject-name ${isHovered || isActive ? 'active' : ''}`}
           onClick={handleClickSubject}
           onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
+          onMouseLeave={() => setIsHovered(false)}>
           진료과
           <img
             src={(isHovered || isActive)
@@ -191,7 +244,6 @@ const Map = () => {
 
         <div className='Map_map' ref={mapRef}></div>
 
-        {/* 리스트 */}
         <div className={`Map_hospital-list ${listExpanded ? 'expanded' : 'collapsed'}`}>
           {filteredHospitals.length === 0 ? (
             <p className='Map_no-result'>검색 결과가 없습니다.</p>
@@ -203,8 +255,7 @@ const Map = () => {
                   <span
                     className={`Map_favorite-star ${favorites.has(h.id) ? 'active' : ''}`}
                     onClick={() => toggleFavorite(h.id)}
-                    title={favorites.has(h.id) ? '즐겨찾기 해제' : '즐겨찾기 추가'}
-                  >
+                    title={favorites.has(h.id) ? '즐겨찾기 해제' : '즐겨찾기 추가'}>
                     ★
                   </span>
                 </div>
@@ -228,7 +279,6 @@ const Map = () => {
           </button>
         </div>
 
-        {/* 진료과목 선택 */}
         {showSubjectList && <div className="Map_overlay" onClick={handleClose}></div>}
 
         <div className={`Map_subject-name-list ${showSubjectList ? 'show' : ''}`}>
@@ -239,12 +289,13 @@ const Map = () => {
           <ul>
             {departments.map(dept => (
               <li key={dept}>
-                <a href="#"
+                <a
+                  href="#"
+                  className={selectedDepts.includes(dept) || (dept === '전체보기' && selectedDepts.length === 0) ? 'selected' : ''}
                   onClick={e => {
                     e.preventDefault()
-                    onSelectDepartment(dept)
-                  }}
-                >
+                    toggleDept(dept)
+                  }}>
                   {dept}
                 </a>
               </li>
