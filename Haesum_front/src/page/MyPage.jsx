@@ -58,6 +58,7 @@ const MyPage = () => {
                             href="#"
                             onMouseEnter={() => setIsSaveHover(true)}
                             onMouseLeave={() => setIsSaveHover(false)}
+                            onClick={() => navigate('/Bookmark')}
                         >
                             <img
                                 src={

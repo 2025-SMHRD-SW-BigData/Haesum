@@ -6,6 +6,7 @@ import MainPage from './page/MainPage'
 import Map from './page/Map'
 import MyPage from './page/MyPage'
 import Start from './page/Start'
+import Bookmark from './page/Bookmark'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path='/map' element={<Map />} />
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/start' element={<Start />} />
+        <Route path='/bookmark' element={<Bookmark />} />
       </Routes>
     </div>
   )

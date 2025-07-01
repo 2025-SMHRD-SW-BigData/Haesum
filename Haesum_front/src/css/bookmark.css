@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/earlyaccess/nanumgothic.css');
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Nanum Gothic', sans-serif;
+    width: 100%;
+    height: 100%;
+}
+
+/* container */
+.Bookmark_container {
+    width: 500px;
+    margin: 0 auto;
+    padding-top: 20px;
+    height: 100%;
+}
+
+.Bookmark_container::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.Bookmark_container h2 {
+    margin: 0 0 20px 0;
+    text-align: center;
+    box-sizing: border-box;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #aaa;
+}
+
+/* header */
+.Bookmark_header {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 30px 0;
+}
+
+.Bookmark_logo {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+}
