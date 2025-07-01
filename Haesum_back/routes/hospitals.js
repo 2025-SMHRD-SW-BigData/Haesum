@@ -1,8 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const { getConnection } = require('../config/db');
+const express = require('express')
+const router = express.Router()
+const { getConnection } = require('../config/db')
 
 router.get('/hospitals', async (req, res) => {
+  const { department } = req.query;
   let connection;
   try {
     connection = await getConnection();
@@ -20,7 +21,7 @@ router.get('/hospitals', async (req, res) => {
       hospitalDeptMap[hospitalId].push(medMap.get(medId));
     });
 
-    const hospitals = hospitalResult.rows.map(row => ({
+    let hospitals = hospitalResult.rows.map(row => ({
       id: row[0],
       name: row[1],
       address: row[2],
@@ -31,6 +32,13 @@ router.get('/hospitals', async (req, res) => {
       departments: hospitalDeptMap[row[0]] || []
     }));
 
+    if (department && department !== '전체보기') {
+      const deptLower = department.toLowerCase();
+      hospitals = hospitals.filter(h =>
+        h.departments.some(d => d.toLowerCase() === deptLower)
+      );
+    }
+
     res.json(hospitals);
   } catch (error) {
     console.error('DB 조회 오류:', error);
@@ -40,4 +48,4 @@ router.get('/hospitals', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = router

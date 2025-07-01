@@ -1,202 +1,317 @@
+ChatGPT의 말:
 @import url('https://fonts.googleapis.com/earlyaccess/nanumgothic.css');
 
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: 'Nanum Gothic', sans-serif;
-  width: 100%;
-  height: 100%;
+padding: 0;
+margin: 0;
+font-family: 'Nanum Gothic', sans-serif;
+width: 100%;
+height: 100%;
 }
 
 .Map_container {
-  width: 500px;
-  margin: 0 auto;
-  padding-top: 20px;
-  height: 100%;
-  position: relative;
+width: 500px;
+margin: 0 auto;
+padding-top: 20px;
+height: 100%;
+position: relative;
 }
 
 .Map_container::after {
-  content: '';
-  display: block;
-  clear: both;
+content: '';
+display: block;
+clear: both;
 }
 
 /* header */
 .Map_header {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0;
-  margin-bottom: 30px;
+width: 100%;
+box-sizing: border-box;
+padding: 0 10px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 30px;
 }
 
 .Map_logo {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto;
+width: 60px;
+height: 60px;
+margin: 0 auto;
 }
 
 /* search-bar */
 .Map_search-bar {
-  display: flex;
-  justify-items: center;
-  align-items: center;
-  background-color: rgba(234, 235, 240, 0.8);
-  border-radius: 20px;
-  padding: 10px 12px;
-  width: 450px;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-  top: 130px;
+z-index: 50;
+display: flex;
+align-items: center;
+background-color: rgba(234, 235, 240, 0.8);
+border-radius: 20px;
+padding: 10px 12px;
+width: 450px;
+position: absolute;
+left: 50%;
+transform: translate(-50%, 0);
+top: 130px;
+justify-items: center;
 }
 
 .Map_search-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
+width: 20px;
+height: 20px;
+margin-right: 8px;
 }
 
 .Map_search-bar input {
-  border: none;
-  outline: none;
-  background-color: transparent;
-  font-size: 15px;
-  flex: 1;
-  color: #000000;
+border: none;
+outline: none;
+background-color: transparent;
+font-size: 15px;
+flex: 1;
+color: #000000;
 }
 
 .Map_search-bar input::placeholder {
-  color: #4b4b4b;
-}
-
-/* 진료과목명 */
-.Map_subject-name img {
-  width: 20px;
-  margin-left: 2px;
-  transition: transform 0.3s ease;
-}
-
-.Map_subject-name img.rotated {
-  transform: rotate(180deg);
+color: #4b4b4b;
 }
 
 .Map_subject-name {
-  width: 102px;
-  height: 32px;
-  font-size: 15px;
-  font-weight: bold;
-  letter-spacing: 0.8px;
-  border-radius: 22px;
-  border: 1px solid #000000;
-  background-color: rgba(228, 228, 228, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 26px;
-  position: absolute;
-  top: 190px;
+z-index: 50;
+width: 102px;
+height: 32px;
+font-size: 15px;
+font-weight: bold;
+letter-spacing: 0.8px;
+border-radius: 22px;
+border: 1px solid #000000;
+background-color: rgba(228, 228, 228, 0.6);
+display: flex;
+align-items: center;
+justify-content: center;
+margin-left: 26px;
+position: absolute;
+top: 190px;
+cursor: pointer;
+user-select: none;
 }
 
 .Map_subject-name:hover,
 .Map_subject-name.active {
-  background-color: #00B0F8;
-  border: none;
-  color: #fff;
-  cursor: pointer;
+background-color: #00B0F8;
+border: none;
+color: #fff;
 }
 
-/* 지도 */
+.Map_subject-name img,
+.Map_subject-name img.rotated {
+width: 20px;
+margin-left: 2px;
+transition: transform 0.3s ease;
+z-index: 50;
+}
+
+.Map_subject-name img.rotated {
+transform: rotate(180deg);
+}
+
 .Map_map {
-  width: 100%;
-  background-color: #ff1010;
-  height: calc(100vh - 120px);
+z-index: 0;
+width: 100%;
+height: calc(100vh - 120px);
+background-color: #ff1010;
 }
 
-/* 진료과목 리스트 */
+/* 진료과 리스트 */
 .Map_subject-name-list {
-  width: 502px;
-  height: 400px;
-  position: fixed;
-  left: 50%;
-  bottom: -450px;
-  transform: translate(-50%, 0);
-  background-color: #ffffff;
-  border-top-left-radius: 50px;
-  border-top-right-radius: 50px;
-  box-sizing: border-box;
-  padding-top: 30px;
-  padding-left: 20px;
-  padding-right: 20px;
-  transition: bottom 0.4s ease-in-out, opacity 0.3s ease-in-out;
-  z-index: 1000;
-  opacity: 0;
+width: 502px;
+height: 400px;
+position: fixed;
+left: 50%;
+bottom: -450px;
+transform: translate(-50%, 0);
+background-color: #ffffff;
+border-top-left-radius: 50px;
+border-top-right-radius: 50px;
+box-sizing: border-box;
+padding-top: 30px;
+padding-left: 20px;
+padding-right: 20px;
+transition: bottom 0.4s ease-in-out, opacity 0.3s ease-in-out;
+z-index: 9999;
+opacity: 0;
 }
 
 .Map_subject-name-list.show {
-  bottom: 100px;
-  opacity: 1;
+bottom: 100px;
+opacity: 1;
 }
 
 .Map_subject-name-list h6 {
-  font-size: 16px;
-  margin: 0;
+font-size: 16px;
+margin: 0;
 }
 
 .Map_subject-name-list img {
-  width: 26px;
-  cursor: pointer;
+width: 26px;
+cursor: pointer;
 }
 
 .Map_list-title {
-  height: 40px;
-  border-bottom: 1px solid #aaa;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
+height: 40px;
+border-bottom: 1px solid #aaa;
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 30px;
 }
 
 .Map_subject-name-list ul {
-  box-sizing: border-box;
-  padding-top: 10px;
-  padding: 0;
-  overflow: hidden;
-  margin: 0;
+width: 100%;
+padding: 0;
+margin: 0;
+overflow: hidden;
+box-sizing: border-box;
 }
 
 .Map_subject-name-list ul li {
-  list-style: none;
-  float: left;
-  margin-right: 10px;
-  margin-bottom: 6px;
+list-style: none;
+float: left;
+margin-right: 10px;
+margin-bottom: 6px;
 }
 
 .Map_subject-name-list ul a {
-  display: inline-block;
-  color: #333;
-  font-size: 14px;
-  text-decoration: none;
-  padding: 5px 14px;
-  border-radius: 20px;
-  border: 1px solid #aaa;
+display: inline-block;
+color: #333;
+font-size: 14px;
+text-decoration: none;
+padding: 5px 14px;
+border-radius: 20px;
+border: 1px solid #aaa;
 }
 
 .Map_subject-name-list a:hover {
-  background-color: #e0e0e0;
+background-color: #e0e0e0;
 }
 
+/* 오버레이 */
 .Map_overlay {
-  position: fixed;
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+background-color: rgba(0, 0, 0, 0.4);
+z-index: 999;
+}
+
+/* 하단 병원 리스트 */
+.Map_hospital-list {
+position: fixed;
+bottom: 0;
+left: 50%;
+transform: translate(-50%, 0);
+width: 480px;
+right: 0;
+overflow-y: auto;
+border-top: 1px solid #ccc;
+background-color: #fff;
+transition: height 0.3s ease;
+z-index: 1000;
+padding: 10px;
+}
+
+.Map_hospital-list.collapsed {
+height: 35vh;
+}
+
+.Map_hospital-list.expanded {
+height: 70vh;
+}
+
+/* 병원 리스트 내부 아이템 */
+.Map_hospital-item {
+margin: 0 10px 10px 10px;
+border-bottom: 1px solid #eee;
+padding-bottom: 8px;
+font-size: 0.9em;
+color: #555;
+}
+
+.Map_hospital-item strong {
+color: #000;
+font-size: 1em;
+}
+
+.Map_hospital-item a {
+font-size: 0.9em;
+color: #0077cc;
+text-decoration: none;
+}
+
+.Map_hospital-item a:hover {
+text-decoration: underline;
+}
+
+/* 검색 결과 없을 때 */
+.Map_no-result {
+text-align: center;
+color: #999;
+padding-top: 20px;
+}
+
+/* 더보기 버튼 */
+.Map_toggle-button {
+position: fixed;
+left: 50%;
+transform: translateX(-50%);
+z-index: 1001;
+transition: bottom 0.3s ease;
+}
+
+.Map_toggle-button.collapsed {
+bottom: 35vh;
+}
+
+.Map_toggle-button.expanded {
+bottom: 70vh;
+}
+
+.Map_toggle-button button {
+background: #f5f5f5;
+border: 1px solid #ccc;
+border-radius: 20px;
+padding: 8px 16px;
+cursor: pointer;
+font-size: 14px;
+}
+
+.Map_hospital-item {
+  position: relative;
+  margin: 0 10px 10px 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.Map_hospital-item strong {
+  font-size: 1em;
+  color: #000;
+}
+
+.Map_favorite-star {
+  position: absolute;
   top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 999;
+  right: 0;
+  cursor: pointer;
+  font-size: 20px;
+  user-select: none;
+  color: #ccc;
+  transition: color 0.3s ease;
+}
+
+.Map_favorite-star.active {
+  color: #FFD700;
 }
