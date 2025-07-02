@@ -3,13 +3,42 @@ import { useNavigate } from 'react-router-dom'
 import '../css/mainpage.css'
 import BottomNav from '../page/BottomNav'
 
-const hospitalData = [
-    [1, 2, 3, 4],
-    [5, 6, 7, 8],
-    [9, 10, 11, 12],
-    [13, 14, 15, 16],
-    [17, 18, 19],
+// 진료과 전체 목록
+const rawHospitalList = [
+    { name: '이비인후과', icon: 'ear' },
+    { name: '정형외과', icon: 'born' },
+    { name: '내과', icon: 'stomach' },
+    { name: '가정의학과', icon: 'healthcare' },
+    { name: '피부과', icon: 'skin' },
+    { name: '안과', icon: 'eye' },
+    { name: '외과', icon: 'operation' },
+    { name: '정신건강의학과', icon: 'mentality' },
+    { name: '비뇨기과', icon: 'bladder' },
+    { name: '재활의학과', icon: 'rehabilitation' },
+    { name: '산부인과', icon: 'obstetrics' },
+    { name: '한방', icon: 'oriental' },
+    { name: '마취통증의학과', icon: 'syringe' },
+    { name: '영상의학과', icon: 'mri' },
+    { name: '결핵과', icon: 'lung' },
+    { name: '응급의학과', icon: 'emergency' },
+    { name: '신경과', icon: 'brain_1' },
+    { name: '신경외과', icon: 'brain_2' },
+    { name: '직업환경의학과', icon: 'stethoscope' },
+    { name: '진단검사의학과', icon: 'experiment' },
+    { name: '성형외과', icon: 'surgery' },
+    { name: '소아청소년과', icon: 'baby' }
 ];
+
+// 4개씩 페이지 나누기
+const chunkArray = (arr, size) => {
+    const chunked = [];
+    for (let i = 0; i < arr.length; i += size) {
+        chunked.push(arr.slice(i, i + size));
+    }
+    return chunked;
+};
+
+const hospitalData = chunkArray(rawHospitalList, 4);
 
 const MainPage = () => {
     const [page, setPage] = useState(0);
@@ -18,9 +47,9 @@ const MainPage = () => {
     const nextPage = () => page < hospitalData.length - 1 && setPage(prev => prev + 1);
     const prevPage = () => page > 0 && setPage(prev => prev - 1);
 
-    const toggleSelect = (num) => {
+    const toggleSelect = (name) => {
         setSelectedItems(prev =>
-            prev.includes(num) ? prev.filter(item => item !== num) : [...prev, num]
+            prev.includes(name) ? prev.filter(item => item !== name) : [...prev, name]
         );
     };
 
@@ -45,19 +74,30 @@ const MainPage = () => {
                             key={index}
                             style={{ display: index === page ? 'flex' : 'none' }}
                         >
-                            {list.map(num => (
-                                <li
-                                    key={num}
-                                    onClick={() => toggleSelect(num)}
-                                    style={{
-                                        backgroundColor: selectedItems.includes(num) ? '#00B0F8' : '#fff',
-                                        color: selectedItems.includes(num) ? '#fff' : '#000',
-                                        borderColor: selectedItems.includes(num) ? '#00B0F8' : '#e0e0e0'
-                                    }}
-                                >
-                                    {num}
-                                </li>
-                            ))}
+                            {list.map((item, i) => {
+                                const isSelected = selectedItems.includes(item.name);
+                                return (
+                                    <li
+                                        key={i}
+                                        onClick={() => toggleSelect(item.name)}
+                                        style={{
+                                            backgroundColor: isSelected ? '#00B0F8' : '#fff',
+                                            color: isSelected ? '#fff' : '#000',
+                                            borderColor: isSelected ? '#00B0F8' : '#e0e0e0'
+                                        }}
+                                    >
+                                        <img
+                                            src={`./src/images/medicalDepartment/${item.icon}.png`}
+                                            alt={item.name}
+                                            onError={(e) => {
+                                                console.warn(`이미지 로딩 실패: ${item.icon}`);
+                                                e.target.style.display = 'none';
+                                            }}
+                                        />
+                                        <span>{item.name}</span>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     ))}
                 </div>
@@ -82,7 +122,7 @@ const MainPage = () => {
             </div>
             <BottomNav />
         </>
-    )
-}
+    );
+};
 
-export default MainPage
+export default MainPage;
