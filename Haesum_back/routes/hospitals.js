@@ -2,41 +2,77 @@ const express = require('express');
 const router = express.Router();
 const { getConnection } = require('../config/db');
 
-router.get('/hospitals', async (req, res) => {
+router.get('/', async (req, res) => {  // 수정: '/hospital' → '/'
+  const { department } = req.query;
   let connection;
+
   try {
     connection = await getConnection();
 
-    const [hospitalResult, departmentResult, mappingResult] = await Promise.all([
-      connection.execute(`SELECT HOSPITAL_ID, HOSPITAL_NAME, ADDRESS, PHONE_NUMBER, LATITUDE, LONGITUDE, WEBSITE FROM HOSPITALINFO`),
-      connection.execute(`SELECT MED_ID, MED_NAME FROM MEDICALDEPT`),
-      connection.execute(`SELECT HOSPITAL_ID, MED_ID FROM HOSPITAL_DEPARTMENT`)
-    ]);
+    const hospitalResult = await connection.execute(
+      `SELECT HOSPITAL_ID, HOSPITAL_NAME, ADDRESS, PHONE_NUMBER, LATITUDE, LONGITUDE, WEBSITE FROM HOSPITALINFO`,
+      [],
+      { outFormat: require('oracledb').OUT_FORMAT_OBJECT }
+    );
+    const departmentResult = await connection.execute(
+      `SELECT MED_ID, MED_NAME FROM MEDICALDEPT`,
+      [],
+      { outFormat: require('oracledb').OUT_FORMAT_OBJECT }
+    );
+    const mappingResult = await connection.execute(
+      `SELECT HOSPITAL_ID, MED_ID FROM HOSPITAL_DEPARTMENT`,
+      [],
+      { outFormat: require('oracledb').OUT_FORMAT_OBJECT }
+    );
 
-    const medMap = new Map(departmentResult.rows.map(([medId, medName]) => [medId, medName]));
-    const hospitalDeptMap = {};
-    mappingResult.rows.forEach(([hospitalId, medId]) => {
-      if (!hospitalDeptMap[hospitalId]) hospitalDeptMap[hospitalId] = [];
-      hospitalDeptMap[hospitalId].push(medMap.get(medId));
+    const hospitalRows = hospitalResult.rows;
+    const departmentRows = departmentResult.rows;
+    const mappingRows = mappingResult.rows;
+
+    const medMap = new Map();
+    departmentRows.forEach(row => {
+      medMap.set(row.MED_ID, row.MED_NAME);
     });
 
-    const hospitals = hospitalResult.rows.map(row => ({
-      id: row[0],
-      name: row[1],
-      address: row[2],
-      phone: row[3],
-      lat: row[4],
-      lng: row[5],
-      website: row[6],
-      departments: hospitalDeptMap[row[0]] || []
+    const hospitalDeptMap = {};
+    mappingRows.forEach(row => {
+      if (!hospitalDeptMap[row.HOSPITAL_ID]) {
+        hospitalDeptMap[row.HOSPITAL_ID] = [];
+      }
+      hospitalDeptMap[row.HOSPITAL_ID].push(medMap.get(row.MED_ID));
+    });
+
+    let hospitals = hospitalRows.map(row => ({
+      id: row.HOSPITAL_ID,
+      name: row.HOSPITAL_NAME,
+      address: row.ADDRESS,
+      phone: row.PHONE_NUMBER,
+      lat: row.LATITUDE,
+      lng: row.LONGITUDE,
+      website: row.WEBSITE,
+      departments: hospitalDeptMap[row.HOSPITAL_ID] || []
     }));
 
+    if (department && department !== '전체보기') {
+      const deptLower = department.toLowerCase();
+      hospitals = hospitals.filter(h =>
+        h.departments.some(d => d && d.toLowerCase() === deptLower)
+      );
+    }
+
     res.json(hospitals);
-  } catch (error) {
-    console.error('DB 조회 오류:', error);
-    res.status(500).json({ error: 'DB 조회 실패' });
+
+  } catch (err) {
+    console.error('DB 조회 오류:', err);
+    res.status(500).json({ error: err.message });
   } finally {
-    if (connection) await connection.close();
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (closeErr) {
+        console.error('DB 연결 닫기 실패:', closeErr);
+      }
+    }
   }
 });
 

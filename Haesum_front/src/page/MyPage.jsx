@@ -1,12 +1,46 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import '../css/mypage.css'
-import BottomNav from '../page/BottomNav'
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import '../css/mypage.css';
+import BottomNav from '../page/BottomNav';
 
 const MyPage = () => {
-    const [isChecklistHover, setIsChecklistHover] = useState(false)
-    const [isSaveHover, setIsSaveHover] = useState(false)
-    const navigate = useNavigate()
+    const [nick, setNick] = useState(null);
+    const [isChecklistHover, setIsChecklistHover] = useState(false);
+    const [isSaveHover, setIsSaveHover] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const res = await axios.get('http://localhost:3000/auth/user', { withCredentials: true });
+                if (res.data.user && res.data.user.nick) {
+                    setNick(res.data.user.nick);
+                    localStorage.setItem('nick', res.data.user.nick);
+                } else {
+                    setNick(null);
+                    localStorage.removeItem('nick');
+                }
+            } catch {
+                setNick(null);
+                localStorage.removeItem('nick');
+            }
+        };
+        fetchUser();
+    }, []);
+
+    const handleLogout = async () => {
+        try {
+            await axios.get('http://localhost:3000/auth/logout', { withCredentials: true });
+            localStorage.removeItem('nick');
+            sessionStorage.removeItem('user'); // 추가
+            setNick(null);
+            navigate('/login');
+        } catch (err) {
+            console.error('로그아웃 실패:', err);
+            alert('로그아웃 실패');
+        }
+    };
 
     return (
         <>
@@ -15,20 +49,28 @@ const MyPage = () => {
                     <img src="./src/images/logo.png" alt="해숨로고" className='MyPage_logo' />
                 </div>
                 <h2>마이페이지</h2>
-                <div className='MyPage_login'>
-                    <p>로그인 해주세요.</p>
-                    <div>
-                        <a
-                            href="#"
-                            onClick={e => {
-                                e.preventDefault()
-                                navigate('/login')
-                            }}
-                        >
-                            로그인
-                        </a>
+
+                {nick ? (
+                    <div className='MyPage_login'>
+                        <p>{nick}님 환영합니다.</p>
+                        <button onClick={handleLogout} className='Logout_btn'>로그아웃</button>
                     </div>
-                </div>
+                ) : (
+                    <div className='MyPage_login'>
+                        <p>로그인 해주세요.</p>
+                        <div>
+                            <a
+                                href="#"
+                                onClick={e => {
+                                    e.preventDefault();
+                                    navigate('/login');
+                                }}
+                            >
+                                로그인
+                            </a>
+                        </div>
+                    </div>
+                )}
 
                 <div className='MyPage_save-container'>
                     <div className='MyPage_checklist'>
@@ -37,16 +79,12 @@ const MyPage = () => {
                             onMouseEnter={() => setIsChecklistHover(true)}
                             onMouseLeave={() => setIsChecklistHover(false)}
                             onClick={e => {
-                                e.preventDefault()
-                                navigate('/start')
+                                e.preventDefault();
+                                navigate('/start');
                             }}
                         >
                             <img
-                                src={
-                                    isChecklistHover
-                                        ? './src/images/choice-2.png'
-                                        : './src/images/choice.png'
-                                }
+                                src={isChecklistHover ? './src/images/choice-2.png' : './src/images/choice.png'}
                                 alt="증상 선택"
                             />
                             <h6>증상 선택하러 가기</h6>
@@ -58,14 +96,13 @@ const MyPage = () => {
                             href="#"
                             onMouseEnter={() => setIsSaveHover(true)}
                             onMouseLeave={() => setIsSaveHover(false)}
-                            onClick={() => navigate('/Bookmark')}
+                            onClick={e => {
+                                e.preventDefault();
+                                navigate('/Bookmark');
+                            }}
                         >
                             <img
-                                src={
-                                    isSaveHover
-                                        ? './src/images/save-2.png'
-                                        : './src/images/save.png'
-                                }
+                                src={isSaveHover ? './src/images/save-2.png' : './src/images/save.png'}
                                 alt="저장"
                             />
                             <h6>병원 즐겨찾기</h6>
@@ -76,7 +113,7 @@ const MyPage = () => {
 
             <BottomNav />
         </>
-    )
-}
+    );
+};
 
-export default MyPage
+export default MyPage;

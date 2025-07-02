@@ -129,3 +129,10 @@ body {
 .MyPage_container h4 {
     font-size: 18px;
 }
+a {
+  all: unset;
+  cursor: pointer;
+  color: inherit;
+  text-align: center;
+  display: inline-block;
+}

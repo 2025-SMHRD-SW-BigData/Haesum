@@ -1,42 +1,36 @@
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const KakaoStrategy = require('passport-kakao').Strategy;
-const NaverStrategy = require('passport-naver').Strategy;
+const GoogleStrategy = require('./googleStrategy');
+const KakaoStrategy = require('./kakaoStrategy');
+const NaverStrategy = require('./naverStrategy');
+const { getConnection } = require('./db');
 
-passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((user, done) => done(null, user));
+passport.serializeUser((user, done) => {
+  done(null, user.USER_ID);
+});
 
-console.log('Google Client ID:', process.env.GOOGLE_CLIENT_ID);
-console.log('Kakao Client ID:', process.env.KAKAO_CLIENT_ID);
-console.log('Naver Client ID:', process.env.NAVER_CLIENT_ID);
+passport.deserializeUser(async (id, done) => {
+  let connection;
+  try {
+    connection = await getConnection();
+    const result = await connection.execute(
+      `SELECT USER_ID, USER_EMAIL, NICK, LOGIN_TYPE FROM USERINFO WHERE USER_ID = :id`,
+      [id]
+    );
+    if (result.rows.length > 0) {
+      const [USER_ID, USER_EMAIL, NICK, LOGIN_TYPE] = result.rows[0];
+      done(null, { USER_ID, USER_EMAIL, nick: NICK, LOGIN_TYPE });
+    } else {
+      done(null, false);
+    }
+  } catch (err) {
+    done(err);
+  } finally {
+    if (connection) await connection.close();
+  }
+});
 
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.GOOGLE_CALLBACK_URL
-}, (accessToken, refreshToken, profile, done) => {
-  console.log('Google OAuth 콜백 호출됨');
-  console.log('Google profile id:', profile.id);
-  done(null, profile);
-}));
-
-passport.use(new KakaoStrategy({
-  clientID: process.env.KAKAO_CLIENT_ID,
-  callbackURL: process.env.KAKAO_CALLBACK_URL
-}, (accessToken, refreshToken, profile, done) => {
-  console.log('Kakao OAuth 콜백 호출됨');
-  console.log('Kakao profile:', profile);
-  done(null, profile);
-}));
-
-passport.use(new NaverStrategy({
-  clientID: process.env.NAVER_CLIENT_ID,
-  clientSecret: process.env.NAVER_CLIENT_SECRET,
-  callbackURL: process.env.NAVER_CALLBACK_URL
-}, (accessToken, refreshToken, profile, done) => {
-  console.log('Naver OAuth 콜백 호출됨');
-  console.log('Naver profile:', profile);
-  done(null, profile);
-}));
+passport.use(GoogleStrategy);
+passport.use(KakaoStrategy);
+passport.use(NaverStrategy);
 
 module.exports = passport;
