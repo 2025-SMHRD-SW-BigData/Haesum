@@ -5,36 +5,38 @@ const session = require('express-session');
 const passport = require('./config/snsLogin');
 const loginRouter = require('./routes/login');
 const userRouter = require('./routes/user');
-const hospitalRouter = require('./routes/hospitals'); // << 반드시 필요
+const hospitalRouter = require('./routes/hospitals');
+const favoriteRouter = require('./routes/favorite');
 
 const app = express();
 const PORT = 3000;
 
+// CORS
 app.use(cors({
   origin: ['http://localhost:3001', 'http://localhost:5173'],
   credentials: true
 }));
 
+// JSON 파싱
 app.use(express.json());
 
+// 세션
 app.use(session({
   secret: 'secret-key',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false, // 세션을 수정할 때만 저장
   cookie: { httpOnly: true, secure: false, sameSite: 'lax' }
 }));
 
+// Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-// 인증 관련 라우터
+// 라우터
 app.use('/auth', loginRouter);
-
-// 사용자 관련 API
 app.use('/api', userRouter);
-
-// 병원 관련 API << 반드시 추가
 app.use('/api', hospitalRouter);
+app.use('/api', favoriteRouter);
 
 app.get('/', (req, res) => {
   res.send('서버 정상 작동');
