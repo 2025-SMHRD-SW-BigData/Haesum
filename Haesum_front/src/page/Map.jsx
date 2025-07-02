@@ -91,7 +91,7 @@ const Map = () => {
     }
 
     const fetchHospitals = (dept = '전체보기') => {
-        let url = 'http://localhost:3000/api/hospitals'
+        let url = 'http://localhost:3000/api/hospital'
         if (dept !== '전체보기' && dept !== '') {
             url += `?department=${encodeURIComponent(dept)}`
         }

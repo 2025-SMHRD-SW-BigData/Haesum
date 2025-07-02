@@ -9,7 +9,6 @@ const Bookmark = () => {
   const [userId, setUserId] = useState(null)
   const [favorites, setFavorites] = useState([])
 
-  // 진료과 출력 함수 (배열 또는 문자열 안전 처리)
   const formatDepartments = (deps) => {
     if (!deps) return '정보 없음'
     if (Array.isArray(deps)) {
@@ -41,7 +40,7 @@ const Bookmark = () => {
   useEffect(() => {
     if (!userId) return
     axios
-      .get('http://localhost:3000/api/favorite', {
+      .get('http://localhost:3000/api/favorite/favorite', {
         params: { userId },
         withCredentials: true,
       })
@@ -49,6 +48,7 @@ const Bookmark = () => {
         const favs = res.data.map((fav) => ({
           ...fav,
           departments: fav.departments || [],
+          id: fav.id || fav.HOSPITAL_ID,
         }))
         setFavorites(favs)
       })
@@ -61,7 +61,7 @@ const Bookmark = () => {
       return
     }
     try {
-      await axios.delete('http://localhost:3000/api/favorite', {
+      await axios.delete('http://localhost:3000/api/favorite/favorite', {
         data: { userId, hospitalId },
         withCredentials: true,
       })
@@ -71,13 +71,12 @@ const Bookmark = () => {
     }
   }
 
-  // 로그아웃 함수 예시
   const handleLogout = async () => {
     try {
       await axios.get('http://localhost:3000/auth/logout', { withCredentials: true })
       sessionStorage.removeItem('user')
       setUserId(null)
-      navigate('/login') // 로그아웃 후 이동할 경로 설정
+      navigate('/login')
     } catch (err) {
       console.error('로그아웃 실패:', err)
     }

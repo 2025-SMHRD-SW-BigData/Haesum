@@ -7,6 +7,9 @@ const loginRouter = require('./routes/login');
 const userRouter = require('./routes/user');
 const hospitalRouter = require('./routes/hospitals');
 const favoriteRouter = require('./routes/favorite');
+const symptomsRouter = require('./routes/symptoms');
+const userSymptomsRouter = require('./routes/userSymptoms'); 
+
 
 const app = express();
 const PORT = 3000;
@@ -34,9 +37,12 @@ app.use(passport.session());
 
 // 라우터
 app.use('/auth', loginRouter);
-app.use('/api', userRouter);
-app.use('/api', hospitalRouter);
-app.use('/api', favoriteRouter);
+app.use('/api/user', userRouter);
+app.use('/api/hospital', hospitalRouter);
+app.use('/api/favorite', favoriteRouter);
+app.use('/api/symptoms', symptomsRouter);
+app.use('/api/user/symptoms', userSymptomsRouter);
+
 
 app.get('/', (req, res) => {
   res.send('서버 정상 작동');

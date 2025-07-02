@@ -1,15 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { getConnection } = require('../config/db');  // 수정
+const { getConnection } = require('../config/db');
 
-router.get('/hospitals', async (req, res) => {
+router.get('/', async (req, res) => {  // 수정: '/hospital' → '/'
   const { department } = req.query;
   let connection;
 
   try {
-    connection = await getConnection();  // 수정
+    connection = await getConnection();
 
-    // 쿼리 실행
     const hospitalResult = await connection.execute(
       `SELECT HOSPITAL_ID, HOSPITAL_NAME, ADDRESS, PHONE_NUMBER, LATITUDE, LONGITUDE, WEBSITE FROM HOSPITALINFO`,
       [],

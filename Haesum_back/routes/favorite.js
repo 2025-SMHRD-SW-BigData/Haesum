@@ -3,9 +3,13 @@ const passport = require('passport')
 const router = express.Router()
 const { getConnection } = require('../config/db')
 
+function isLoggedIn(req) {
+  return req.isAuthenticated && req.isAuthenticated()
+}
+
 // 즐겨찾기 추가
 router.post('/favorite', async (req, res) => {
-  if (!req.isAuthenticated || !req.isAuthenticated()) {
+  if (!isLoggedIn(req)) {
     return res.status(401).json({ success: false, message: '로그인이 필요합니다.' })
   }
 
@@ -33,7 +37,7 @@ router.post('/favorite', async (req, res) => {
 
 // 즐겨찾기 삭제
 router.delete('/favorite', async (req, res) => {
-  if (!req.isAuthenticated || !req.isAuthenticated()) {
+  if (!isLoggedIn(req)) {
     return res.status(401).json({ success: false, message: '로그인이 필요합니다.' })
   }
 
@@ -60,7 +64,7 @@ router.delete('/favorite', async (req, res) => {
 
 // 즐겨찾기 조회
 router.get('/favorite', async (req, res) => {
-  if (!req.isAuthenticated || !req.isAuthenticated()) {
+  if (!isLoggedIn(req)) {
     return res.status(401).json({ success: false, message: '로그인이 필요합니다.' })
   }
 
