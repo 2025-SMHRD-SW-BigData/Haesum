@@ -4,7 +4,7 @@ const router = express.Router()
 const { getConnection } = require('../config/db')
 
 function isLoggedIn(req) {
-  return req.isAuthenticated && req.isAuthenticated()
+  return typeof req.isAuthenticated === 'function' && req.isAuthenticated()
 }
 
 // 즐겨찾기 추가
@@ -64,10 +64,9 @@ router.delete('/favorite', async (req, res) => {
 
 // 즐겨찾기 조회
 router.get('/favorite', async (req, res) => {
-  if (!isLoggedIn(req)) {
-    return res.status(401).json({ success: false, message: '로그인이 필요합니다.' })
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    return res.status(401).json({ success: false, message: '로그인 필요' })
   }
-
   const userId = req.user.USER_ID
 
   let connection
@@ -75,7 +74,7 @@ router.get('/favorite', async (req, res) => {
     connection = await getConnection()
     const result = await connection.execute(
       `SELECT H.HOSPITAL_ID, H.HOSPITAL_NAME, H.ADDRESS, H.PHONE_NUMBER, H.WEBSITE,
-        LISTAGG(M.MED_NAME, ',') WITHIN GROUP (ORDER BY M.MED_NAME) AS DEPARTMENTS
+          LISTAGG(M.MED_NAME, ',') WITHIN GROUP (ORDER BY M.MED_NAME) AS DEPARTMENTS
        FROM FAVORITE F
        JOIN HOSPITALINFO H ON F.HOSPITAL_ID = H.HOSPITAL_ID
        LEFT JOIN HOSPITAL_DEPARTMENT HD ON H.HOSPITAL_ID = HD.HOSPITAL_ID

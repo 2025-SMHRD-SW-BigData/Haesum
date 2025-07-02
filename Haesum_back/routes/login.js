@@ -29,6 +29,7 @@ router.post('/login', async (req, res, next) => {
       const [userId, userEmail, pw, nick, age, phone, loginType] = result.rows[0];
       const user = { USER_ID: userId, USER_EMAIL: userEmail, nick, AGE: age, PHONE: phone, LOGIN_TYPE: loginType };
 
+
       req.login(user, err => {
         if (err) return next(err);
         res.json({

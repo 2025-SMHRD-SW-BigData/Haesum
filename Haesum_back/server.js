@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(session({
   secret: 'secret-key',
   resave: false,
-  saveUninitialized: false, // 세션을 수정할 때만 저장
+  saveUninitialized: false,
   cookie: { httpOnly: true, secure: false, sameSite: 'lax' }
 }));
 

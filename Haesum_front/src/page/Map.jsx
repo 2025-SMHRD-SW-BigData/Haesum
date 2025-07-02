@@ -54,32 +54,24 @@ const Map = () => {
         if (stored) {
             const user = JSON.parse(stored)
             setUserId(user.userId)
-        } else {
-            axios.get('http://localhost:3000/auth/user', { withCredentials: true })
-                .then(res => {
-                    if (res.data.user) {
-                        setUserId(res.data.user.userId)
-                        sessionStorage.setItem('user', JSON.stringify(res.data.user))
-                    }
-                })
-                .catch(err => console.error('세션 사용자 확인 실패:', err))
         }
     }, [])
 
-    // 유저 즐겨찾기 초기 불러오기 (추가)
+    // userId 있을 때만 즐겨찾기 불러오기 (userId 쿼리 제거, 세션 인증만)
     useEffect(() => {
-        if (!userId) return
+        if (!userId) return;
 
-        axios.get(`http://localhost:3000/api/favorite?userId=${userId}`, { withCredentials: true })
+        axios.get('http://localhost:3000/api/favorite/favorite', {
+            withCredentials: true,
+        })
             .then(res => {
                 if (res.data && Array.isArray(res.data)) {
-                    const favSet = new Set(res.data.map(fav => fav.id))
-                    setFavorites(favSet)
+                    const favSet = new Set(res.data.map(fav => fav.id));
+                    setFavorites(favSet);
                 }
             })
-            .catch(err => console.error('즐겨찾기 불러오기 실패:', err))
-    }, [userId])
-
+            .catch(err => console.error('즐겨찾기 불러오기 실패:', err));
+    }, [userId]);
     const handleClickSubject = () => {
         setShowSubjectList(true)
         setIsActive(true)
@@ -236,42 +228,38 @@ const Map = () => {
         setFilteredHospitals(filtered)
     }
 
-    // 즐겨찾기 토글 (서버 연동)
+    // 즐겨찾기 토글 (서버 연동) userId 제거, 세션 인증 활용
     const toggleFavorite = async (hospitalId) => {
-        if (userId === null) {
-            alert('로그인 정보 불러오는 중입니다. 잠시 후 다시 시도해주세요.')
-            return
-        }
         if (!userId) {
             alert('로그인 해주세요')
             return
         }
+
         try {
             if (favorites.has(hospitalId)) {
-                await axios.delete('http://localhost:3000/api/favorite', {
-                    data: { userId, hospitalId },
+                await axios.delete('http://localhost:3000/api/favorite/favorite', {
+                    data: { hospitalId },
                     withCredentials: true,
                 })
             } else {
-                await axios.post('http://localhost:3000/api/favorite', {
-                    userId,
+                await axios.post('http://localhost:3000/api/favorite/favorite', {
                     hospitalId,
                 }, { withCredentials: true })
             }
+
             setFavorites((prev) => {
                 const newSet = new Set(prev)
                 if (newSet.has(hospitalId)) newSet.delete(hospitalId)
                 else newSet.add(hospitalId)
                 return newSet
             })
+
         } catch (err) {
             console.error('즐겨찾기 토글 실패:', err)
         }
     }
 
     return (
-
-
         <div>
             <div className='Map_container'>
                 <div className='Map_header'>
@@ -375,8 +363,6 @@ const Map = () => {
             <BottomNav />
         </div>
     )
-
-
 }
 
 export default Map
