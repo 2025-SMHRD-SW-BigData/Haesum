@@ -46,7 +46,6 @@ const Bookmark = () => {
         withCredentials: true,
       })
       .then((res) => {
-        // departments가 없으면 빈 배열로 초기화
         const favs = res.data.map((fav) => ({
           ...fav,
           departments: fav.departments || [],
@@ -58,7 +57,7 @@ const Bookmark = () => {
 
   const removeFavorite = async (hospitalId) => {
     if (!userId) {
-      alert('로그인이 필요합니다')
+      alert('로그인 해주세요')
       return
     }
     try {
@@ -69,6 +68,18 @@ const Bookmark = () => {
       setFavorites((prev) => prev.filter((f) => f.id !== hospitalId))
     } catch (err) {
       console.error('즐겨찾기 삭제 실패:', err)
+    }
+  }
+
+  // 로그아웃 함수 예시
+  const handleLogout = async () => {
+    try {
+      await axios.get('http://localhost:3000/auth/logout', { withCredentials: true })
+      sessionStorage.removeItem('user')
+      setUserId(null)
+      navigate('/login') // 로그아웃 후 이동할 경로 설정
+    } catch (err) {
+      console.error('로그아웃 실패:', err)
     }
   }
 

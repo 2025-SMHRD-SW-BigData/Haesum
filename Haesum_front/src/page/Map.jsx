@@ -243,22 +243,22 @@ const Map = () => {
             return
         }
         if (!userId) {
-            alert('로그인이 필요합니다')
+            alert('로그인 해주세요')
             return
         }
         try {
             if (favorites.has(hospitalId)) {
                 await axios.delete('http://localhost:3000/api/favorite', {
                     data: { userId, hospitalId },
-                    withCredentials: true
+                    withCredentials: true,
                 })
             } else {
                 await axios.post('http://localhost:3000/api/favorite', {
                     userId,
-                    hospitalId
+                    hospitalId,
                 }, { withCredentials: true })
             }
-            setFavorites(prev => {
+            setFavorites((prev) => {
                 const newSet = new Set(prev)
                 if (newSet.has(hospitalId)) newSet.delete(hospitalId)
                 else newSet.add(hospitalId)
@@ -270,6 +270,8 @@ const Map = () => {
     }
 
     return (
+
+
         <div>
             <div className='Map_container'>
                 <div className='Map_header'>
@@ -316,12 +318,13 @@ const Map = () => {
                                         className={`Map_favorite-star ${favorites.has(h.id) ? 'active' : ''}`}
                                         onClick={() => {
                                             if (!userId) {
-                                                alert('로그인이 필요합니다')
+                                                alert('로그인 해주세요')
                                                 return
                                             }
                                             toggleFavorite(h.id)
                                         }}
-                                        title={favorites.has(h.id) ? '즐겨찾기 해제' : '즐겨찾기 추가'}>
+                                        title={favorites.has(h.id) ? '즐겨찾기 해제' : '즐겨찾기 추가'}
+                                    >
                                         ★
                                     </span>
                                 </div>
@@ -372,6 +375,8 @@ const Map = () => {
             <BottomNav />
         </div>
     )
+
+
 }
 
 export default Map
