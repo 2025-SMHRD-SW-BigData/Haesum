@@ -1,5 +1,7 @@
+// kakaoStrategy.js
 const KakaoStrategy = require('passport-kakao').Strategy;
 const { getConnection } = require('./db');
+const oracledb = require('oracledb');
 
 module.exports = new KakaoStrategy({
   clientID: process.env.KAKAO_CLIENT_ID,
@@ -15,7 +17,8 @@ module.exports = new KakaoStrategy({
     const checkResult = await connection.execute(
       `SELECT USER_ID, USER_EMAIL, NICK, LOGIN_TYPE FROM USERINFO
        WHERE USER_EMAIL = :email AND LOGIN_TYPE = :loginType`,
-      { email, loginType }
+      { email, loginType },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
 
     let user;
@@ -29,14 +32,20 @@ module.exports = new KakaoStrategy({
       const inserted = await connection.execute(
         `SELECT USER_ID, USER_EMAIL, NICK, LOGIN_TYPE FROM USERINFO
          WHERE USER_EMAIL = :email AND LOGIN_TYPE = :loginType`,
-        { email, loginType }
+        { email, loginType },
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
       );
       user = inserted.rows[0];
     } else {
       user = checkResult.rows[0];
     }
-    const [USER_ID, USER_EMAIL, NICK, LOGIN_TYPE] = user;
-    done(null, { USER_ID, USER_EMAIL, NICK, LOGIN_TYPE });
+
+    done(null, {
+      USER_ID: user.USER_ID,
+      USER_EMAIL: user.USER_EMAIL,
+      NICK: user.NICK,
+      LOGIN_TYPE: user.LOGIN_TYPE
+    });
   } catch (err) {
     done(err);
   } finally {

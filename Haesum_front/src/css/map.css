@@ -119,7 +119,7 @@ transform: rotate(180deg);
 z-index: 0;
 width: 100%;
 height: calc(100vh - 120px);
-background-color: #ff1010;
+background-color: #ffffff;
 }
 
 /* 진료과 리스트 */

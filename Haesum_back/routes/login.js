@@ -29,7 +29,6 @@ router.post('/login', async (req, res, next) => {
       const [userId, userEmail, pw, nick, age, phone, loginType] = result.rows[0];
       const user = { USER_ID: userId, USER_EMAIL: userEmail, nick, AGE: age, PHONE: phone, LOGIN_TYPE: loginType };
 
-
       req.login(user, err => {
         if (err) return next(err);
         res.json({
@@ -87,16 +86,22 @@ router.get('/logout', (req, res, next) => {
 
 // 로그인 상태 확인 및 사용자 정보 반환
 router.get('/user', (req, res) => {
-  if (req.isAuthenticated && req.isAuthenticated()) {
+  if (typeof req.isAuthenticated === 'function' && req.isAuthenticated()) {
     const user = req.user || {};
+
+    // user가 문자열 또는 숫자일 경우 객체로 변환
+    const userInfo = typeof user === 'string' || typeof user === 'number'
+      ? { USER_ID: String(user) }
+      : user;
+
     res.json({
       user: {
-        userId: user.USER_ID || user.userId || null,
-        userEmail: user.USER_EMAIL || user.userEmail || null,
-        nick: user.nick || user.NICK || null,
-        age: user.AGE || user.age || null,
-        phone: user.PHONE || user.phone || null,
-        loginType: user.LOGIN_TYPE || user.loginType || null
+        userId: userInfo.USER_ID || userInfo.userId || null,
+        userEmail: userInfo.USER_EMAIL || userInfo.userEmail || null,
+        nick: userInfo.nick || userInfo.NICK || null,
+        age: userInfo.AGE || userInfo.age || null,
+        phone: userInfo.PHONE || userInfo.phone || null,
+        loginType: userInfo.LOGIN_TYPE || userInfo.loginType || null,
       }
     });
   } else {

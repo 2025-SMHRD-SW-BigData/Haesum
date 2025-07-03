@@ -3,26 +3,32 @@ const GoogleStrategy = require('./googleStrategy');
 const KakaoStrategy = require('./kakaoStrategy');
 const NaverStrategy = require('./naverStrategy');
 const { getConnection } = require('./db');
+const oracledb = require('oracledb');
 
 passport.serializeUser((user, done) => {
+  console.log('✅ serializeUser 저장:', user.USER_ID);
   done(null, user.USER_ID);
 });
 
 passport.deserializeUser(async (id, done) => {
+  console.log('🔥 passport.deserializeUser 실행:', id);
   let connection;
   try {
     connection = await getConnection();
     const result = await connection.execute(
       `SELECT USER_ID, USER_EMAIL, NICK, LOGIN_TYPE FROM USERINFO WHERE USER_ID = :id`,
-      [id]
+      [id],
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
+    console.log('📌 DB 조회 결과:', result.rows);
+
     if (result.rows.length > 0) {
-      const [USER_ID, USER_EMAIL, NICK, LOGIN_TYPE] = result.rows[0];
-      done(null, { USER_ID, USER_EMAIL, nick: NICK, LOGIN_TYPE });
+      done(null, result.rows[0]);
     } else {
       done(null, false);
     }
   } catch (err) {
+    console.error('🔥 deserializeUser 오류:', err);
     done(err);
   } finally {
     if (connection) await connection.close();

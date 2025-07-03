@@ -1,18 +1,15 @@
 const express = require('express')
-const passport = require('passport')
 const router = express.Router()
 const { getConnection } = require('../config/db')
 
-function isLoggedIn(req) {
-  return typeof req.isAuthenticated === 'function' && req.isAuthenticated()
+// 인증 미들웨어
+function ensureLoggedIn(req, res, next) {
+  if (req.isAuthenticated && req.isAuthenticated()) return next()
+  res.status(401).json({ success: false, message: '로그인이 필요합니다.' })
 }
 
 // 즐겨찾기 추가
-router.post('/favorite', async (req, res) => {
-  if (!isLoggedIn(req)) {
-    return res.status(401).json({ success: false, message: '로그인이 필요합니다.' })
-  }
-
+router.post('/favorite', ensureLoggedIn, async (req, res) => {
   const userId = req.user.USER_ID
   const { hospitalId } = req.body
   if (!hospitalId) return res.status(400).json({ success: false, message: 'hospitalId 필요' })
@@ -36,11 +33,7 @@ router.post('/favorite', async (req, res) => {
 })
 
 // 즐겨찾기 삭제
-router.delete('/favorite', async (req, res) => {
-  if (!isLoggedIn(req)) {
-    return res.status(401).json({ success: false, message: '로그인이 필요합니다.' })
-  }
-
+router.delete('/favorite', ensureLoggedIn, async (req, res) => {
   const userId = req.user.USER_ID
   const { hospitalId } = req.body
   if (!hospitalId) return res.status(400).json({ success: false, message: 'hospitalId 필요' })
@@ -63,10 +56,7 @@ router.delete('/favorite', async (req, res) => {
 })
 
 // 즐겨찾기 조회
-router.get('/favorite', async (req, res) => {
-  if (!req.isAuthenticated || !req.isAuthenticated()) {
-    return res.status(401).json({ success: false, message: '로그인 필요' })
-  }
+router.get('/favorite', ensureLoggedIn, async (req, res) => {
   const userId = req.user.USER_ID
 
   let connection
