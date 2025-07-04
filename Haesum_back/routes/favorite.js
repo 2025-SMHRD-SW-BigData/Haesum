@@ -61,25 +61,28 @@ router.get('/favorite', ensureLoggedIn, async (req, res) => {
 
   let connection
   try {
-    connection = await getConnection()
+    connection = await getConnection()  // 누락된 부분 추가
     const result = await connection.execute(
       `SELECT H.HOSPITAL_ID, H.HOSPITAL_NAME, H.ADDRESS, H.PHONE_NUMBER, H.WEBSITE,
-          LISTAGG(M.MED_NAME, ',') WITHIN GROUP (ORDER BY M.MED_NAME) AS DEPARTMENTS
+              H.LATITUDE, H.LONGITUDE,
+              LISTAGG(M.MED_NAME, ',') WITHIN GROUP (ORDER BY M.MED_NAME) AS DEPARTMENTS
        FROM FAVORITE F
        JOIN HOSPITALINFO H ON F.HOSPITAL_ID = H.HOSPITAL_ID
        LEFT JOIN HOSPITAL_DEPARTMENT HD ON H.HOSPITAL_ID = HD.HOSPITAL_ID
        LEFT JOIN MEDICALDEPT M ON HD.MED_ID = M.MED_ID
        WHERE F.USER_ID = :userId
-       GROUP BY H.HOSPITAL_ID, H.HOSPITAL_NAME, H.ADDRESS, H.PHONE_NUMBER, H.WEBSITE`,
+       GROUP BY H.HOSPITAL_ID, H.HOSPITAL_NAME, H.ADDRESS, H.PHONE_NUMBER, H.WEBSITE, H.LATITUDE, H.LONGITUDE`,
       { userId }
     )
 
-    const favorites = result.rows.map(([id, name, address, phone, website, departments]) => ({
+    const favorites = result.rows.map(([id, name, address, phone, website, lat, lng, departments]) => ({
       id,
       name,
       address,
       phone,
       website,
+      lat,
+      lng,
       departments: departments ? departments.split(',') : [],
     }))
     res.json(favorites)

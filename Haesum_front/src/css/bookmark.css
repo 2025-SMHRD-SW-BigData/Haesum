@@ -118,3 +118,24 @@ body {
   font-size: 1em;
   margin-top: 60px;
 }
+
+/* 길찾기 버튼 추가 스타일 */
+
+.Bookmark_direction-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid #17a0fc;
+  background-color: white;
+  color: #17a0fc;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+.Bookmark_direction-btn:hover {
+  background-color: #17a0fc;
+  color: white;
+}

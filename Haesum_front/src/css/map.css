@@ -326,3 +326,27 @@ font-size: 14px;
 }
 
 
+/* 추가 CSS */
+.Map_hospital-item {
+  position: relative;
+  padding-bottom: 30px; /* 길찾기 버튼 공간 확보 */
+}
+
+.Map_direction-button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid #17a0fc;
+  background-color: white;
+  color: #17a0fc;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+.Map_direction-button:hover {
+  background-color: #17a0fc;
+  color: white;
+}

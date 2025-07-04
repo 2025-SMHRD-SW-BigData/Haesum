@@ -78,6 +78,7 @@ body {
     position: absolute;
     top: 50px;
     left: 0;
+    right: 0;
 }
 
 .MainPage_hospital-list li {
@@ -99,7 +100,6 @@ body {
     text-align: center;
     box-sizing: border-box;
 }
-
 
 .MainPage_hospital-list-container .MainPage_hospital-list {
     display: none;
@@ -194,6 +194,9 @@ body {
     font-size: 14px;
     color: #242424;
     transition: 0.1s ease;
+    text-align: left;
+    display: block;
+    width: 100%;
 }
 
 .MainPage_youtube-listbox ul li a:hover {
@@ -201,12 +204,14 @@ body {
 }
 
 .MainPage_youtube-listbox > div {
+    position: relative;
     width: 100%;
     border-radius: 20px;
     border: 1px solid #D9D9D9;
     height: 180px;
     box-sizing: border-box;
     padding-top: 16px;
+    overflow-y: auto;
 }
 
 .MainPage_more {
@@ -232,21 +237,6 @@ body {
 }
 
 /* --------------- */
-.MainPage_hospital-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    position: absolute;
-    top: 50px;
-    left: 0;
-    right: 0;
-}
-
-
 
 .MainPage_hospital-list li img {
     width: 50px;
@@ -257,4 +247,58 @@ body {
 .MainPage_hospital-list li span {
     font-size: 16px;
     font-weight: bold;
+}
+
+/* 토글 버튼 */
+.MainPage_toggle-button {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1001;
+    transition: bottom 0.3s ease;
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    display: block;
+    margin: 10px auto 0 auto;
+}
+
+.MainPage_toggle-button.collapsed {
+    bottom: 35vh;
+}
+
+.MainPage_toggle-button.expanded {
+    bottom: 70vh;
+}
+
+
+.MainPage_youtube-listbox > div {
+    position: relative;
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid #D9D9D9;
+    height: 180px;
+    box-sizing: border-box;
+    padding-top: 16px;
+    overflow-y: auto;
+}
+
+.MainPage_toggle-button {
+    position: sticky;
+    bottom: 0;
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 10px auto 0 auto;
+    display: block;
+    width: fit-content;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
 }

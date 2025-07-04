@@ -45,12 +45,15 @@ const Bookmark = ({ isLoggedIn }) => {
 
   useEffect(() => {
     if (!userId) return;
+    console.log('즐겨찾기 로드 userId:', userId);
+
     axios
       .get('http://localhost:3000/api/favorite/favorite', {
         params: { userId },
         withCredentials: true,
       })
       .then((res) => {
+        console.log('즐겨찾기 데이터:', res.data);
         const favs = res.data.map((fav) => ({
           ...fav,
           departments: fav.departments || [],
@@ -77,6 +80,15 @@ const Bookmark = ({ isLoggedIn }) => {
     }
   };
 
+  const openDirection = (lat, lng, name) => {
+    if (!lat || !lng) {
+      alert('위치 정보가 없습니다.');
+      return;
+    }
+    const url = `https://map.kakao.com/link/to/${encodeURIComponent(name)},${lat},${lng}`;
+    window.open(url, '_blank');
+  };
+
   return (
     <>
       <div className="Bookmark_container">
@@ -98,7 +110,7 @@ const Bookmark = ({ isLoggedIn }) => {
           <p>즐겨찾기한 병원이 없습니다.</p>
         ) : (
           favorites.map((f) => (
-            <div key={f.id} className="Bookmark_item">
+            <div key={f.id} className="Bookmark_item" style={{ position: 'relative', paddingBottom: '30px' }}>
               <strong>{f.name}</strong>
               <br />
               <span>{f.address}</span>
@@ -114,6 +126,13 @@ const Bookmark = ({ isLoggedIn }) => {
               )}
               <button className="Bookmark_remove-btn" onClick={() => removeFavorite(f.id)}>
                 삭제
+              </button>
+
+              <button
+                className="Bookmark_direction-btn"
+                onClick={() => openDirection(f.lat, f.lng, f.name)}
+              >
+                길찾기
               </button>
             </div>
           ))

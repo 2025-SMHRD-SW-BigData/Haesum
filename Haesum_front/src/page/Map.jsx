@@ -271,7 +271,7 @@ const Map = () => {
     }
   }
 
-  // selectedDepts 바뀔 때마다 inputValue도 동기화
+  // selectedDepts 바뀔 때마다 inputValue 동기화
   useEffect(() => {
     if (selectedDepts.length === 0) {
       setInputValue('')
@@ -279,6 +279,16 @@ const Map = () => {
       setInputValue(selectedDepts.join(', '))
     }
   }, [selectedDepts])
+
+  // 길찾기 버튼 클릭 시 카카오맵 길찾기 새창 열기
+  const openDirection = (lat, lng, name) => {
+    if (!lat || !lng) {
+      alert('위치 정보가 없습니다.')
+      return
+    }
+    const url = `https://map.kakao.com/link/to/${encodeURIComponent(name)},${lat},${lng}`
+    window.open(url, '_blank')
+  }
 
   if (userId === null) return <div>로딩 중...</div>
 
@@ -342,6 +352,14 @@ const Map = () => {
                     홈페이지
                   </a>
                 )}
+
+                {/* 길찾기 버튼 추가 */}
+                <button
+                  className="Map_direction-button"
+                  onClick={() => openDirection(h.lat, h.lng, h.name)}
+                >
+                  길찾기
+                </button>
               </div>
             ))
           )}

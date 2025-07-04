@@ -24,7 +24,7 @@ const Login = () => {
               JSON.stringify({ userId: res.data.user.userId || res.data.user.id })
             );
           }
-          navigate('/mypage');
+          navigate('/start');
         }
       })
       .catch(() => {});
@@ -47,7 +47,7 @@ const Login = () => {
         if (res.data.user.userId || res.data.user.id) {
           sessionStorage.setItem('user', JSON.stringify({ userId: res.data.user.userId }));
         }
-        navigate('/mypage');
+        navigate('/start');
       } else {
         alert('로그인 실패: ' + (res.data.message || ''));
       }
@@ -68,7 +68,7 @@ const Login = () => {
         localStorage.setItem('login_type', res.data.user.loginType);
 
         sessionStorage.setItem('user', JSON.stringify({ userId: res.data.user.userId }));
-        navigate('/mypage');
+        navigate('/start');
       } else {
         alert('비회원 로그인 실패');
       }
@@ -95,7 +95,7 @@ const Login = () => {
     <div className='Login_container'>
       {nick && <p className="welcome-message">{nick}님 환영합니다.</p>}
 
-      <a href="#" className='Login_back' onClick={e => { e.preventDefault(); navigate('/mypage'); }}>
+      <a href="#" className='Login_back' onClick={e => { e.preventDefault(); navigate('/start'); }}>
         <img src="./src/images/back.png" alt="뒤로가기" />
       </a>
 

@@ -1,11 +1,10 @@
-// MyPage.js
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../css/mypage.css';
 import BottomNav from '../page/BottomNav';
 
-const MyPage = ({ isLoggedIn }) => {
+const MyPage = () => {
   const [nick, setNick] = useState(null);
   const [userId, setUserId] = useState(null);
   const [isChecklistHover, setIsChecklistHover] = useState(false);
@@ -112,10 +111,6 @@ const MyPage = ({ isLoggedIn }) => {
               onMouseLeave={() => setIsSaveHover(false)}
               onClick={e => {
                 e.preventDefault();
-                if (!isLoggedIn || userId === '999') {
-                  alert('회원가입 후 이용해주세요');
-                  return;
-                }
                 navigate('/Bookmark');
               }}
             >
