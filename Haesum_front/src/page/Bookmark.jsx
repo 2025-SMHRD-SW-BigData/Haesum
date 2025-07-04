@@ -93,15 +93,9 @@ const Bookmark = ({ isLoggedIn }) => {
     <>
       <div className="Bookmark_container">
         <div className="Bookmark_header">
-          <button
-            className="Login_back"
-            onClick={() => {
-              navigate('/mypage');
-            }}
-            aria-label="뒤로가기"
-          >
-            <img src="./src/images/back.png" alt="뒤로가기" />
-          </button>
+         <a href="#" className='Login_back' onClick={e => { e.preventDefault(); navigate('/mypage'); }}>
+        <img src="./src/images/back.png" alt="뒤로가기" />
+      </a>
           <img src="./src/images/logo.png" alt="해숨로고" className="Bookmark_logo" />
         </div>
         <h2>병원 즐겨찾기</h2>

@@ -237,10 +237,18 @@ const MainPage = () => {
             </div>
           </div>
         </div>
+
         <div>
-          
+          <button
+            type="button"
+            onClick={() => navigate('/community')}
+            className="MainPage_community-button"
+          >
+            커뮤니티 페이지로 이동
+          </button>
         </div>
-   
+
+
       </div>
       <BottomNav />
     </>

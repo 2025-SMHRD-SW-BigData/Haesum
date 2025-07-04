@@ -95,7 +95,7 @@ const Login = () => {
     <div className='Login_container'>
       {nick && <p className="welcome-message">{nick}님 환영합니다.</p>}
 
-      <a href="#" className='Login_back' onClick={e => { e.preventDefault(); navigate('/start'); }}>
+      <a href="#" className='Login_back' onClick={e => { e.preventDefault(); navigate('/mypage'); }}>
         <img src="./src/images/back.png" alt="뒤로가기" />
       </a>
 
