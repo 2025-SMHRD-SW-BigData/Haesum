@@ -22,7 +22,7 @@ const Community = () => {
       phone: '064-724-0911',
       departments: ['결핵과', '내과', '소아청소년과'],
       rating: 3,
-      keywords: ['대기길음', '가격저렴']
+      keywords: ['대기김', '가격저렴']
     },
     {
       id: 3,
