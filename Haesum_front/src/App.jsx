@@ -8,6 +8,7 @@ import Map from './page/Map';
 import MyPage from './page/MyPage';
 import Start from './page/Start';
 import Bookmark from './page/Bookmark';
+import Community from './page/Community';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/mypage" element={<MyPage isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/start" element={<Start isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/Bookmark" element={<Bookmark isLoggedIn={isLoggedIn} />} />
+        <Route path="/community" element={<Community />} />
       </Routes>
     </div>
   );

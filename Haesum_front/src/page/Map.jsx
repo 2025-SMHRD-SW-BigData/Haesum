@@ -308,8 +308,7 @@ const Map = () => {
             placeholder="질병, 진료과, 병원을 검색해보세요."
             onKeyDown={e => { if (e.key === 'Enter') onSearch() }}
           />
-          <button onClick={onSearch}>검색</button>
-        </div>
+          <button class="Map_search-button" onClick={onSearch}>검색</button>        </div>
 
         <div className={`Map_subject-name ${isHovered || isActive ? 'active' : ''}`}
           onClick={handleClickSubject}

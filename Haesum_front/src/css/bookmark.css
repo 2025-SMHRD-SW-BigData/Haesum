@@ -10,6 +10,7 @@ body {
   font-family: 'Nanum Gothic', sans-serif;
   width: 100%;
   height: 100%;
+  padding-bottom: 60px;
 }
 
 /* container */
@@ -17,7 +18,7 @@ body {
   width: 500px;
   margin: 0 auto;
   padding-top: 20px;
-  height: 100%;
+  height: calc(100% - 60px);
 }
 
 .Bookmark_container::after {

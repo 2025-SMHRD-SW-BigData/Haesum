@@ -8,13 +8,14 @@ margin: 0;
 font-family: 'Nanum Gothic', sans-serif;
 width: 100%;
 height: 100%;
+padding-bottom: 60px;
 }
 
 .Map_container {
 width: 500px;
 margin: 0 auto;
 padding-top: 20px;
-height: 100%;
+height: calc(100% - 60px);
 position: relative;
 }
 
@@ -229,14 +230,15 @@ background-color: #fff;
 transition: height 0.3s ease;
 z-index: 1000;
 padding: 10px;
+padding-bottom: 115px;
 }
 
 .Map_hospital-list.collapsed {
-height: 35vh;
+height: 25vh;
 }
 
 .Map_hospital-list.expanded {
-height: 70vh;
+height: 60vh;
 }
 
 /* 병원 리스트 내부 아이템 */
@@ -277,6 +279,8 @@ left: 50%;
 transform: translateX(-50%);
 z-index: 1001;
 transition: bottom 0.3s ease;
+padding-bottom: 10px;
+
 }
 
 .Map_toggle-button.collapsed {
@@ -349,4 +353,20 @@ font-size: 14px;
 .Map_direction-button:hover {
   background-color: #17a0fc;
   color: white;
+}
+
+.Map_search-button {
+  background-color: #17a0fc;
+  color: white;
+  padding: 4px 14px;
+  border: none;
+  border-radius: 20px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+}
+
+.Map_search-button:hover {
+  background-color: #1489dc;
 }
