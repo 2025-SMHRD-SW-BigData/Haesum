@@ -11,7 +11,7 @@ const BottomNav = () => {
         <div className='BottomNav_nav'>
             <a 
                 className='BottomNav_home'
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/mainpage')}
             >
                 <img src="./src/images/home.png" alt="홈" />
             </a>

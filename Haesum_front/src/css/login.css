@@ -160,3 +160,9 @@ body {
 .Login_form button:hover {
     background-color: #333;
 }
+
+.Login_btn.guest a {
+    background-color: #666;
+    color: #fff;
+}
+

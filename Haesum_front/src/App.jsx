@@ -1,3 +1,4 @@
+// App.js
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Join from './page/Join';
@@ -11,23 +12,16 @@ import Bookmark from './page/Bookmark';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  console.log('App 렌더링. isLoggedIn:', isLoggedIn);
-
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<MainPage />} />
+        <Route path="/mainpage" element={<MainPage />} />
         <Route path="/join" element={<Join />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/map" element={<Map />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route
-          path="/start"
-          element={
-            <Start isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-          }
-        />
-        <Route path="/bookmark" element={<Bookmark />} />
+        <Route path="/mypage" element={<MyPage isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/start" element={<Start isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/Bookmark" element={<Bookmark isLoggedIn={isLoggedIn} />} />
       </Routes>
     </div>
   );

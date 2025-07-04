@@ -1,44 +1,50 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import '../css/bookmark.css'
-import BottomNav from '../page/BottomNav'
+// Bookmark.js
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import '../css/bookmark.css';
+import BottomNav from '../page/BottomNav';
 
-const Bookmark = () => {
-  const navigate = useNavigate()
-  const [userId, setUserId] = useState(null)
-  const [favorites, setFavorites] = useState([])
+const Bookmark = ({ isLoggedIn }) => {
+  const navigate = useNavigate();
+  const [userId, setUserId] = useState(null);
+  const [favorites, setFavorites] = useState([]);
 
   const formatDepartments = (deps) => {
-    if (!deps) return '정보 없음'
+    if (!deps) return '정보 없음';
     if (Array.isArray(deps)) {
-      if (deps.length === 0) return '정보 없음'
-      return deps.join(', ')
+      if (deps.length === 0) return '정보 없음';
+      return deps.join(', ');
     }
-    if (typeof deps === 'string') return deps
-    return '정보 없음'
-  }
+    if (typeof deps === 'string') return deps;
+    return '정보 없음';
+  };
 
   useEffect(() => {
-    const stored = sessionStorage.getItem('user')
+    if (!isLoggedIn) {
+      alert('로그인 후 이용해주세요');
+      navigate('/');
+      return;
+    }
+    const stored = sessionStorage.getItem('user');
     if (stored) {
-      const user = JSON.parse(stored)
-      setUserId(user.userId)
+      const user = JSON.parse(stored);
+      setUserId(user.userId);
     } else {
       axios
         .get('http://localhost:3000/auth/user', { withCredentials: true })
         .then((res) => {
           if (res.data.user) {
-            setUserId(res.data.user.userId)
-            sessionStorage.setItem('user', JSON.stringify(res.data.user))
+            setUserId(res.data.user.userId);
+            sessionStorage.setItem('user', JSON.stringify(res.data.user));
           }
         })
-        .catch((err) => console.error('세션 사용자 확인 실패:', err))
+        .catch((err) => console.error('세션 사용자 확인 실패:', err));
     }
-  }, [])
+  }, [isLoggedIn, navigate]);
 
   useEffect(() => {
-    if (!userId) return
+    if (!userId) return;
     axios
       .get('http://localhost:3000/api/favorite/favorite', {
         params: { userId },
@@ -49,38 +55,27 @@ const Bookmark = () => {
           ...fav,
           departments: fav.departments || [],
           id: fav.id || fav.HOSPITAL_ID,
-        }))
-        setFavorites(favs)
+        }));
+        setFavorites(favs);
       })
-      .catch((err) => console.error('즐겨찾기 불러오기 실패:', err))
-  }, [userId])
+      .catch((err) => console.error('즐겨찾기 불러오기 실패:', err));
+  }, [userId]);
 
   const removeFavorite = async (hospitalId) => {
     if (!userId) {
-      alert('로그인 해주세요')
-      return
+      alert('로그인 해주세요');
+      return;
     }
     try {
       await axios.delete('http://localhost:3000/api/favorite/favorite', {
         data: { userId, hospitalId },
         withCredentials: true,
-      })
-      setFavorites((prev) => prev.filter((f) => f.id !== hospitalId))
+      });
+      setFavorites((prev) => prev.filter((f) => f.id !== hospitalId));
     } catch (err) {
-      console.error('즐겨찾기 삭제 실패:', err)
+      console.error('즐겨찾기 삭제 실패:', err);
     }
-  }
-
-  const handleLogout = async () => {
-    try {
-      await axios.get('http://localhost:3000/auth/logout', { withCredentials: true })
-      sessionStorage.removeItem('user')
-      setUserId(null)
-      navigate('/login')
-    } catch (err) {
-      console.error('로그아웃 실패:', err)
-    }
-  }
+  };
 
   return (
     <>
@@ -89,7 +84,7 @@ const Bookmark = () => {
           <button
             className="Login_back"
             onClick={() => {
-              navigate('/mypage')
+              navigate('/mypage');
             }}
             aria-label="뒤로가기"
           >
@@ -126,7 +121,7 @@ const Bookmark = () => {
       </div>
       <BottomNav />
     </>
-  )
-}
+  );
+};
 
-export default Bookmark
+export default Bookmark;

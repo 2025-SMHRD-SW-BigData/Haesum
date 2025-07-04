@@ -73,6 +73,49 @@ router.get('/naver/callback',
   (req, res) => res.redirect('http://localhost:5173/mypage')
 );
 
+// 비회원 로그인
+router.post('/guest-login', async (req, res, next) => {
+  let connection;
+  try {
+    connection = await getConnection();
+    const sql = `
+      SELECT USER_ID, USER_EMAIL, NICK, AGE, PHONE, LOGIN_TYPE
+      FROM USERINFO
+      WHERE USER_ID = 999
+    `;
+    const result = await connection.execute(sql);
+
+    console.log('비회원 로그인 쿼리 결과:', result.rows[0]);
+
+    if (result.rows.length > 0) {
+      const [userId, userEmail, nick, age, phone, loginType] = result.rows[0];
+      const user = { USER_ID: userId, USER_EMAIL: userEmail, nick, AGE: age, PHONE: phone, LOGIN_TYPE: loginType };
+
+      req.login(user, err => {
+        if (err) return next(err);
+        res.json({
+          success: true,
+          user: {
+            userId,
+            userEmail,
+            nick,
+            age,
+            phone,
+            loginType,
+          }
+        });
+      });
+    } else {
+      res.json({ success: false, message: '비회원 계정을 찾을 수 없습니다.' });
+    }
+  } catch (err) {
+    console.error('비회원 로그인 오류:', err);
+    res.status(500).json({ success: false, message: err.message });
+  } finally {
+    if (connection) await connection.close();
+  }
+});
+
 // 로그아웃
 router.get('/logout', (req, res, next) => {
   req.logout(err => {
@@ -89,7 +132,6 @@ router.get('/user', (req, res) => {
   if (typeof req.isAuthenticated === 'function' && req.isAuthenticated()) {
     const user = req.user || {};
 
-    // user가 문자열 또는 숫자일 경우 객체로 변환
     const userInfo = typeof user === 'string' || typeof user === 'number'
       ? { USER_ID: String(user) }
       : user;

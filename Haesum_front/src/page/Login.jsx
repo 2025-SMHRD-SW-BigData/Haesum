@@ -10,7 +10,6 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 로그인 상태 확인 시도
     axios.get('http://localhost:3000/auth/user', { withCredentials: true })
       .then(res => {
         if (res.data.user && res.data.user.nick) {
@@ -25,11 +24,10 @@ const Login = () => {
               JSON.stringify({ userId: res.data.user.userId || res.data.user.id })
             );
           }
-
           navigate('/mypage');
         }
       })
-      .catch(() => { });
+      .catch(() => {});
   }, [navigate]);
 
   const handleLogin = async () => {
@@ -49,7 +47,6 @@ const Login = () => {
         if (res.data.user.userId || res.data.user.id) {
           sessionStorage.setItem('user', JSON.stringify({ userId: res.data.user.userId }));
         }
-
         navigate('/mypage');
       } else {
         alert('로그인 실패: ' + (res.data.message || ''));
@@ -60,10 +57,30 @@ const Login = () => {
     }
   };
 
+  const handleGuestLogin = async () => {
+    try {
+      const res = await axios.post('http://localhost:3000/auth/guest-login', {}, { withCredentials: true });
+
+      if (res.data.success) {
+        setNick(res.data.user.nick);
+        localStorage.setItem('nick', res.data.user.nick);
+        localStorage.setItem('email', res.data.user.userEmail);
+        localStorage.setItem('login_type', res.data.user.loginType);
+
+        sessionStorage.setItem('user', JSON.stringify({ userId: res.data.user.userId }));
+        navigate('/mypage');
+      } else {
+        alert('비회원 로그인 실패');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('서버 오류');
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await axios.get('http://localhost:3000/auth/logout', { withCredentials: true });
-      // 로그아웃 시 저장된 정보 모두 삭제
       setNick('');
       localStorage.clear();
       sessionStorage.clear();
@@ -123,6 +140,11 @@ const Login = () => {
         <div className="Login_btn google">
           <a href="http://localhost:3000/auth/google">
             <img src="./src/images/google.png" alt="구글" />구글로 시작하기
+          </a>
+        </div>
+        <div className="Login_btn guest">
+          <a href="#" onClick={e => { e.preventDefault(); handleGuestLogin(); }}>
+            비회원으로 이용하기
           </a>
         </div>
       </div>

@@ -242,8 +242,8 @@ const Map = () => {
   }
 
   const toggleFavorite = async (hospitalId) => {
-    if (!userId) {
-      alert('로그인 해주세요')
+    if (!userId || userId === '999') {
+      alert('회원가입 후 이용해주세요')
       return
     }
 
