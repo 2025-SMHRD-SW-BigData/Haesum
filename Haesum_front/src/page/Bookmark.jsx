@@ -10,6 +10,7 @@ const Bookmark = ({ isLoggedIn }) => {
   const [userId, setUserId] = useState(null);
   const [favorites, setFavorites] = useState([]);
 
+  // 진료과 포맷 함수
   const formatDepartments = (deps) => {
     if (!deps) return '정보 없음';
     if (Array.isArray(deps)) {
@@ -20,6 +21,7 @@ const Bookmark = ({ isLoggedIn }) => {
     return '정보 없음';
   };
 
+  // 로그인 및 사용자 정보 확인
   useEffect(() => {
     if (!isLoggedIn) {
       alert('로그인 후 이용해주세요');
@@ -43,17 +45,15 @@ const Bookmark = ({ isLoggedIn }) => {
     }
   }, [isLoggedIn, navigate]);
 
+  // 즐겨찾기 데이터 로드
   useEffect(() => {
     if (!userId) return;
-    console.log('즐겨찾기 로드 userId:', userId);
-
     axios
       .get('http://localhost:3000/api/favorite/favorite', {
         params: { userId },
         withCredentials: true,
       })
       .then((res) => {
-        console.log('즐겨찾기 데이터:', res.data);
         const favs = res.data.map((fav) => ({
           ...fav,
           departments: fav.departments || [],
@@ -64,6 +64,7 @@ const Bookmark = ({ isLoggedIn }) => {
       .catch((err) => console.error('즐겨찾기 불러오기 실패:', err));
   }, [userId]);
 
+  // 즐겨찾기 삭제 함수
   const removeFavorite = async (hospitalId) => {
     if (!userId) {
       alert('로그인 해주세요');
@@ -80,12 +81,26 @@ const Bookmark = ({ isLoggedIn }) => {
     }
   };
 
+  // 제주시청 출발지 고정, 병원 도착지로 차량 길찾기 (출발지/도착지 명칭 포함)
   const openDirection = (lat, lng, name) => {
     if (!lat || !lng) {
       alert('위치 정보가 없습니다.');
       return;
     }
-    const url = `https://map.kakao.com/link/to/${encodeURIComponent(name)},${lat},${lng}`;
+
+    // 제주시청 좌표 (위도, 경도)
+    const fromLat = 33.499622;
+    const fromLng = 126.531188;
+    const fromName = '제주시청';
+
+    // 병원 좌표 및 이름
+    const toLat = lat;
+    const toLng = lng;
+    const toName = name;
+
+    // 카카오맵 길찾기 URL - 출발지와 도착지 명칭과 좌표를 명확히 지정
+    const url = `https://map.kakao.com/link/from/${encodeURIComponent(fromName)},${fromLat},${fromLng}/to/${encodeURIComponent(toName)},${toLat},${toLng}`;
+
     window.open(url, '_blank');
   };
 
@@ -93,9 +108,16 @@ const Bookmark = ({ isLoggedIn }) => {
     <>
       <div className="Bookmark_container">
         <div className="Bookmark_header">
-         <a href="#" className='Login_back' onClick={e => { e.preventDefault(); navigate('/mypage'); }}>
-        <img src="./src/images/back.png" alt="뒤로가기" />
-      </a>
+          <a
+            href="#"
+            className="Login_back"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('/mypage');
+            }}
+          >
+            <img src="./src/images/back.png" alt="뒤로가기" />
+          </a>
           <img src="./src/images/logo.png" alt="해숨로고" className="Bookmark_logo" />
         </div>
         <h2>병원 즐겨찾기</h2>
@@ -104,7 +126,11 @@ const Bookmark = ({ isLoggedIn }) => {
           <p>즐겨찾기한 병원이 없습니다.</p>
         ) : (
           favorites.map((f) => (
-            <div key={f.id} className="Bookmark_item" style={{ position: 'relative', paddingBottom: '30px' }}>
+            <div
+              key={f.id}
+              className="Bookmark_item"
+              style={{ position: 'relative', paddingBottom: '30px' }}
+            >
               <strong>{f.name}</strong>
               <br />
               <span>{f.address}</span>

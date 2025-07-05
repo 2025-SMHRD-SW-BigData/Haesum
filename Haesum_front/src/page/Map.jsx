@@ -271,7 +271,6 @@ const Map = () => {
     }
   }
 
-  // selectedDepts 바뀔 때마다 inputValue 동기화
   useEffect(() => {
     if (selectedDepts.length === 0) {
       setInputValue('')
@@ -280,13 +279,23 @@ const Map = () => {
     }
   }, [selectedDepts])
 
-  // 길찾기 버튼 클릭 시 카카오맵 길찾기 새창 열기
+  // 제주시청 출발지 고정, 병원 도착지 길찾기 (출발지/도착지 명칭 포함)
   const openDirection = (lat, lng, name) => {
     if (!lat || !lng) {
       alert('위치 정보가 없습니다.')
       return
     }
-    const url = `https://map.kakao.com/link/to/${encodeURIComponent(name)},${lat},${lng}`
+
+    const fromLat = 33.499622
+    const fromLng = 126.531188
+    const fromName = '제주시청'
+
+    const toLat = lat
+    const toLng = lng
+    const toName = name
+
+    const url = `https://map.kakao.com/link/from/${encodeURIComponent(fromName)},${fromLat},${fromLng}/to/${encodeURIComponent(toName)},${toLat},${toLng}`
+
     window.open(url, '_blank')
   }
 
@@ -308,7 +317,8 @@ const Map = () => {
             placeholder="질병, 진료과, 병원을 검색해보세요."
             onKeyDown={e => { if (e.key === 'Enter') onSearch() }}
           />
-          <button class="Map_search-button" onClick={onSearch}>검색</button>        </div>
+          <button className="Map_search-button" onClick={onSearch}>검색</button>
+        </div>
 
         <div className={`Map_subject-name ${isHovered || isActive ? 'active' : ''}`}
           onClick={handleClickSubject}
@@ -352,7 +362,6 @@ const Map = () => {
                   </a>
                 )}
 
-                {/* 길찾기 버튼 추가 */}
                 <button
                   className="Map_direction-button"
                   onClick={() => openDirection(h.lat, h.lng, h.name)}

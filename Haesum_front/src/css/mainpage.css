@@ -266,44 +266,39 @@ body {
     font-size: 14px;
     display: block;
     margin: 10px auto 0 auto;
-}
 
-.MainPage_toggle-button.collapsed {
-    bottom: 35vh;
-}
-
-.MainPage_toggle-button.expanded {
-    bottom: 70vh;
 }
 
 
-.MainPage_youtube-listbox>div {
+
+.MainPage_youtube-listbox > div {
     position: relative;
-    width: 100%;
     border-radius: 20px;
     border: 1px solid #D9D9D9;
     height: 180px;
     box-sizing: border-box;
     padding-top: 16px;
+    padding-bottom: 40px; /* 토글 버튼 공간 확보 */
     overflow-y: auto;
+    z-index: 1;
 }
 
 .MainPage_toggle-button {
-    position: sticky;
-    bottom: 0;
+    position: absolute;
+    bottom: 130px;
+    left: 50%;
+    transform: translateX(-50%);
     background: #f5f5f5;
     border: 1px solid #ccc;
     border-radius: 20px;
     padding: 8px 16px;
     cursor: pointer;
     font-size: 14px;
-    margin: 10px auto 0 auto;
-    display: block;
+    z-index: 1000;
     width: fit-content;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
+    display: block;
 }
+
 
 .MainPage_community-button {
     margin: 20px auto 40px;
@@ -318,4 +313,68 @@ body {
     width: fit-content;
     text-align: center;
     margin-bottom: 60px;
+}
+
+
+
+
+.MainPage_community-preview {
+  margin: 40px auto;
+  max-width: 600px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.MainPage_community-preview h4 {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.MainPage_post {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+}
+
+.MainPage_post strong {
+  font-size: 1.1em;
+  color: #0077cc;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.MainPage_post p {
+  font-size: 0.95em;
+  color: #555;
+  margin: 4px 0;
+}
+
+.MainPage_comment-btn {
+  display: block;
+  margin: 10px auto 0 auto;        /* 중앙 정렬 및 위쪽 마진 */
+  padding: 8px 16px;               /* 적절한 패딩 */
+  border: 1px solid #ccc;          /* 은은한 회색 테두리 */
+  background-color: #f5f5f5;       /* 연한 회색 배경 */
+  color: #000;                     /* 텍스트 검정색 */
+  border-radius: 20px;             /* 둥근 모서리 */
+  cursor: pointer;                 /* 클릭 가능 커서 */
+  font-size: 14px;                 /* 가독성 좋은 크기 */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  width: fit-content;              /* 콘텐츠 크기에 맞는 너비 */
+  text-align: center;              /* 텍스트 중앙 정렬 */
+  box-sizing: border-box;          /* 패딩 포함 너비 계산 */
+}
+
+.MainPage_comment-btn:hover {
+  background-color: #e0e0e0;       /* 호버 시 약간 진한 회색 배경 */
+  border-color: #bbb;              /* 호버 시 테두리 색상 변경 */
 }

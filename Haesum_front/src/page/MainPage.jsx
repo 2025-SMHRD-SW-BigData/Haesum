@@ -104,6 +104,29 @@ const youtubeVideosByDept = {
   ]
 }
 
+// 임시 더미 커뮤니티 후기 데이터 (추후 API 연동 시 교체)
+const dummyCommunityPosts = [
+  {
+    id: 1,
+    name: '(재)한국의학연구소제주의원',
+    address: '제주특별자치도 서귀포시 솔오름로 61 (동홍동)',
+    phone: '064-729-6500',
+    departments: ['가정의학과', '내과', '영상의학과', '직업환경의학과'],
+    rating: 4,
+    keywords: ['친절', '빠름']
+  },
+  {
+    id: 2,
+    name: '911매일의원',
+    address: '제주특별자치도 제주시 아연로 603 (아라일동)',
+    phone: '064-724-0911',
+    departments: ['결핵과', '내과', '소아청소년과'],
+    rating: 3,
+    keywords: ['대기김', '가격저렴']
+  },
+  // 필요시 더 추가 가능
+]
+
 const MainPage = () => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -177,6 +200,9 @@ const MainPage = () => {
   const limitedVideos = videoLists.slice(0, 3)
   const displayVideos = showAllVideos ? videoLists : limitedVideos
 
+  // 후기 미리보기 2개
+  const previewPosts = dummyCommunityPosts.slice(0, 2)
+
   return (
     <>
       <div className='MainPage_container'>
@@ -184,6 +210,7 @@ const MainPage = () => {
           <img src='./src/images/logo.png' alt='해숨로고' className='MainPage_logo' />
         </div>
 
+        {/* 진료과목 리스트 */}
         <div className='MainPage_hospital-list-container'>
           <h4>
             나에게 맞는 진료과목 보기
@@ -207,6 +234,7 @@ const MainPage = () => {
           </ul>
         </div>
 
+        {/* 건강정보 영상 리스트 */}
         <div className='MainPage_youtube'>
           <h4>
             요즘 뜨는 건강정보 영상 보기
@@ -225,30 +253,42 @@ const MainPage = () => {
                   </li>
                 ))}
               </ul>
-              {videoLists.length > 3 && (
-                <button
-                  type='button'
-                  onClick={() => setShowAllVideos(prev => !prev)}
-                  className='MainPage_toggle-button'
-                >
-                  {showAllVideos ? '접기 ▲' : '▼ 더보기'}
-                </button>
-              )}
             </div>
+            <button
+              type='button'
+              onClick={() => setShowAllVideos(prev => !prev)}
+              className='MainPage_toggle-button'
+            >
+              {showAllVideos ? '접기 ▲' : '▼ 더보기'}
+            </button>
           </div>
         </div>
 
-        <div>
+        {/* 커뮤니티 후기 미리보기 */}
+        <div className='MainPage_community-preview'>
+          <h4>병원 후기</h4>
+
+          {previewPosts.map(post => (
+            <div key={post.id} className='MainPage_post'>
+              <strong>{post.name}</strong>
+              <p>{post.address}</p>
+              <p>{post.phone}</p>
+              <p>진료과: {post.departments.join(', ')}</p>
+              <p>{'⭐'.repeat(post.rating)} ({post.rating})</p>
+              <p>키워드: {post.keywords.join(', ')}</p>
+            </div>
+          ))}
+
+
           <button
-            type="button"
+            type='button'
+            className='MainPage_comment-btn'
             onClick={() => navigate('/community')}
-            className="MainPage_community-button"
           >
-            커뮤니티 페이지로 이동
+            더보기
           </button>
+
         </div>
-
-
       </div>
       <BottomNav />
     </>
