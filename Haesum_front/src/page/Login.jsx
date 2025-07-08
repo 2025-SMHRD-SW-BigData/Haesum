@@ -24,7 +24,7 @@ const Login = () => {
               JSON.stringify({ userId: res.data.user.userId || res.data.user.id })
             );
           }
-          navigate('/start');
+          navigate('/mypage');
         }
       })
       .catch(() => {});
@@ -47,7 +47,7 @@ const Login = () => {
         if (res.data.user.userId || res.data.user.id) {
           sessionStorage.setItem('user', JSON.stringify({ userId: res.data.user.userId }));
         }
-        navigate('/start');
+        navigate('/mypage');
       } else {
         alert('로그인 실패: ' + (res.data.message || ''));
       }
@@ -68,7 +68,7 @@ const Login = () => {
         localStorage.setItem('login_type', res.data.user.loginType);
 
         sessionStorage.setItem('user', JSON.stringify({ userId: res.data.user.userId }));
-        navigate('/start');
+        navigate('/mypage');
       } else {
         alert('비회원 로그인 실패');
       }

@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('../config/snsLogin');
 const { getConnection } = require('../config/db');
+const oracledb = require('oracledb');
 const router = express.Router();
 
 // 요청 로그
@@ -8,6 +9,40 @@ router.use((req, res, next) => {
   console.log('login 라우터 호출:', req.method, req.url);
   console.log('body:', req.body);
   next();
+});
+
+// 회원가입
+router.post('/join', async (req, res) => {
+  const { phone, password, email, nick, age, login_type } = req.body;
+  let connection;
+  try {
+    connection = await getConnection();
+
+    // 중복 이메일 또는 닉네임 체크
+    const checkSql = `
+      SELECT COUNT(*) AS CNT FROM USERINFO WHERE USER_EMAIL = :email OR NICK = :nick
+    `;
+    const checkResult = await connection.execute(checkSql, { email, nick }, { outFormat: oracledb.OUT_FORMAT_OBJECT });
+    if (checkResult.rows[0].CNT > 0) {
+      return res.json({ success: false, message: '이미 존재하는 이메일 또는 닉네임입니다.' });
+    }
+
+    // 회원정보 삽입
+    const sql = `
+      INSERT INTO USERINFO (USER_ID, PHONE, PW, USER_EMAIL, NICK, AGE, LOGIN_TYPE)
+      VALUES (USER_SEQ.NEXTVAL, :phone, :password, :email, :nick, :age, :login_type)
+    `;
+    await connection.execute(sql, { phone, password, email, nick, age, login_type });
+    await connection.commit();
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('회원가입 오류:', err);
+    if (connection) await connection.rollback();
+    res.status(500).json({ success: false, message: err.message });
+  } finally {
+    if (connection) await connection.close();
+  }
 });
 
 // 일반 로그인

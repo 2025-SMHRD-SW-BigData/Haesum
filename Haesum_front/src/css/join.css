@@ -74,3 +74,16 @@ body {
     font-size: 16px;
     cursor: pointer;
 }
+
+.Join_back {
+    display: block;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 60px;
+}
+
+.Join_back img {
+    display: block;
+    width: 32px;
+    height: 32px;
+}

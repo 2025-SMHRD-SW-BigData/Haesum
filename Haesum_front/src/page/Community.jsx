@@ -57,7 +57,7 @@ const Community = () => {
     <>
       <div className="Community_container">
         <div className="Community_header">
-          <a href="#" className="Login_back" onClick={e => { e.preventDefault(); navigate('/mypage'); }}>
+          <a href="#" className="Login_back" onClick={e => { e.preventDefault(); navigate('/mainpage'); }}>
             <img src="./src/images/back.png" alt="뒤로가기" />
           </a>
           <img src="./src/images/logo.png" alt="해숨로고" className="Community_logo" />

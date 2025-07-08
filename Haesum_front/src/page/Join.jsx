@@ -10,7 +10,6 @@ const Join = () => {
     const [email, setEmail] = useState('')
     const [nick, setNick] = useState('')
     const [age, setAge] = useState('')
-
     const navigate = useNavigate()
 
     const handleJoin = async () => {
@@ -20,17 +19,17 @@ const Join = () => {
         }
 
         try {
-            const res = await axios.post('http://localhost:3000/api/join', {
+            const res = await axios.post('http://localhost:3000/auth/join', {
                 phone,
                 password,
                 email,
                 nick,
                 age,
                 login_type: 'phone'
-            })
+            }, { withCredentials: true })
             if (res.data.success) {
                 alert('회원가입 성공')
-                navigate('/login')
+                navigate('/')
             } else {
                 alert('회원가입 실패')
             }
@@ -42,6 +41,10 @@ const Join = () => {
 
     return (
         <div className='Join_container'>
+            <a href="#" className='Join_back' onClick={e => { e.preventDefault(); navigate(-1); }}>
+                <img src="./src/images/back.png" alt="뒤로가기" />
+            </a>
+
             <h2>회원가입</h2>
 
             <div className='Join_input-group'>
